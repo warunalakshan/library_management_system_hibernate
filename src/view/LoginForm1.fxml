@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="root" prefHeight="540.0" prefWidth="730.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginForm1Controller">
+   <children>
+      <ImageView fitHeight="548.0" fitWidth="755.0" layoutX="-1.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@image/library.jpg" />
+         </image>
+      </ImageView>
+      <Pane fx:id="pane_SignIn" layoutX="84.0" layoutY="90.0" prefHeight="342.0" prefWidth="577.0" style="-fx-background-color: rgba(100, 100, 100, 0.5);">
+         <children>
+            <TextField fx:id="txt_userName" layoutX="34.0" layoutY="141.0" prefHeight="43.0" prefWidth="481.0" promptText="User Name">
+               <font>
+                  <Font size="17.0" />
+               </font></TextField>
+            <Label layoutX="198.0" layoutY="14.0" text="ADMIN" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="26.0" />
+               </font>
+            </Label>
+            <Label layoutX="305.0" layoutY="13.0" text="Login" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="26.0" />
+               </font>
+            </Label>
+            <Label layoutX="34.0" layoutY="62.0" text="Sign In" textFill="WHITE">
+               <font>
+                  <Font name="System Bold Italic" size="21.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="60.0" fitWidth="99.0" layoutX="472.0" layoutY="45.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@image/admin.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="35.0" layoutY="92.0" text="Fill in the form below to get instant access." textFill="WHITE">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <TextField fx:id="txt_Password" layoutX="34.0" layoutY="202.0" onAction="#txt_Password_OnAction" prefHeight="43.0" prefWidth="481.0" promptText="Password">
+               <font>
+                  <Font size="17.0" />
+               </font></TextField>
+            <Button fx:id="btn_Submit" layoutX="35.0" layoutY="264.0" mnemonicParsing="false" onAction="#btn_Submit_OnAction" prefHeight="49.0" prefWidth="108.0" style="-fx-background-color: #00aaff;" text="Submit">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Button>
+            <Label fx:id="lbl_SignUp" layoutX="472.0" layoutY="294.0" onMouseClicked="#lbl_SignUp_OnAction" text="Sign up" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Pane fx:id="pane_SignUp" layoutX="86.0" layoutY="86.0" prefHeight="342.0" prefWidth="577.0" style="-fx-background-color: rgba(53,89,119,0.4);" visible="false">
+         <children>
+            <Label layoutX="228.0" layoutY="26.0" text="SIGN Up" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="26.0" />
+               </font>
+            </Label>
+            <TextField fx:id="txt_NIC_SignUp" layoutX="34.0" layoutY="206.0" onAction="#txt_NIC_SignUp_OnAction" prefHeight="43.0" prefWidth="481.0" promptText="NIC">
+               <font>
+                  <Font size="17.0" />
+               </font>
+            </TextField>
+            <Button fx:id="btn_SignUp" layoutX="34.0" layoutY="267.0" mnemonicParsing="false" onAction="#btn_SignUp_OnAction" prefHeight="49.0" prefWidth="108.0" style="-fx-background-color: #00aaff;" text="SIGN UP" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Button>
+            <TextField fx:id="txt_Password_SignUp" layoutX="34.0" layoutY="146.0" prefHeight="43.0" prefWidth="481.0" promptText="Password">
+               <font>
+                  <Font size="17.0" />
+               </font>
+            </TextField>
+            <TextField fx:id="txt_UserName_SignUp" layoutX="34.0" layoutY="86.0" prefHeight="43.0" prefWidth="481.0" promptText="User Name">
+               <font>
+                  <Font size="17.0" />
+               </font>
+            </TextField>
+            <ImageView fitHeight="43.0" fitWidth="74.0" layoutX="13.0" layoutY="6.0" onMouseClicked="#img_Back_OnAction" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@image/back.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>

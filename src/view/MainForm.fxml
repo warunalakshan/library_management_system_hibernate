@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXDatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="root" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #808080;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainFormController">
+   <children>
+      <Pane fx:id="pane_Issue" layoutX="195.0" layoutY="171.0" onMouseClicked="#img_List" prefHeight="328.0" prefWidth="675.0" style="-fx-background-color: rgba(100, 100, 100, 0.5);" visible="false">
+         <children>
+            <JFXComboBox layoutX="121.0" layoutY="72.0" prefHeight="26.0" prefWidth="287.0" promptText="Member ID" />
+            <JFXComboBox layoutX="121.0" layoutY="134.0" prefHeight="26.0" prefWidth="287.0" promptText="Book ID" />
+            <Label layoutX="568.0" layoutY="26.0" text="ISSUE ID">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+            <JFXDatePicker layoutX="121.0" layoutY="205.0" prefHeight="26.0" prefWidth="297.0" promptText="Date" />
+            <JFXButton layoutX="327.0" layoutY="271.0" prefHeight="26.0" prefWidth="107.0" style="-fx-background-color: #008000;" text="ISSUE" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </JFXButton>
+            <Label layoutX="269.0" layoutY="12.0" text="Book Issue" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="21.0" />
+               </font>
+            </Label>
+            <JFXButton fx:id="btn_Cancel_BookIssue" layoutX="449.0" layoutY="271.0" onMouseClicked="#btn_Cancel_BookIssue_OnAction" prefHeight="26.0" prefWidth="107.0" style="-fx-background-color: #008000;" text="CANCEL" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </JFXButton>
+         </children></Pane>
+      <ImageView fx:id="img_ListDown" fitHeight="54.0" fitWidth="68.0" layoutX="40.0" layoutY="6.0" onMouseClicked="#img_ListDown" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@image/ListDown.png" />
+         </image>
+      </ImageView>
+      <Pane fx:id="Pane_1_DashBoard" layoutX="7.0" layoutY="73.0" prefHeight="514.0" prefWidth="144.0" visible="false">
+         <children>
+            <ImageView fx:id="img_ShowMembers" fitHeight="71.0" fitWidth="81.0" layoutX="24.0" layoutY="199.0" onMouseClicked="#img_ShowMembers_OnAction" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@image/ShowMember.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="22.0" layoutY="62.0" text="Add Member">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font></Label>
+            <Label layoutX="24.0" layoutY="166.0" text="Add Books">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font></Label>
+            <ImageView fx:id="img_AddBooks" fitHeight="71.0" fitWidth="90.0" layoutX="26.0" layoutY="91.0" onMouseClicked="#img_AddBooks_OnAction" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@image/AddBooks.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="img_AddMember" fitHeight="71.0" fitWidth="81.0" layoutX="29.0" layoutY="-3.0" onMouseClicked="#img_AddMember_OnAction" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@image/AddMember.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="21.0" layoutY="267.0" text="Members List">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+            <ImageView fx:id="img_BooksList" fitHeight="87.0" fitWidth="100.0" layoutX="23.0" layoutY="293.0" onMouseClicked="#img_BooksList_OnAction" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@image/BooksList.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="27.0" layoutY="377.0" text="Books List">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="54.0" fitWidth="66.0" layoutX="38.0" layoutY="416.0" onMouseClicked="#Img_Signout" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@image/SignOut.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="31.0" layoutY="476.0" text="SignOut">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <ImageView fx:id="img_ListUp" fitHeight="54.0" fitWidth="68.0" layoutX="40.0" layoutY="6.0" onMouseClicked="#img_ListUp" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@image/listUp.png" />
+         </image>
+      </ImageView>
+      <JFXButton layoutX="295.0" layoutY="47.0" onAction="#btn_BookIssue_DashBoard" prefHeight="26.0" prefWidth="232.0" style="-fx-background-color: #ffc34d;" text="BOOK ISSUE" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </JFXButton>
+      <JFXButton layoutX="527.0" layoutY="47.0" onAction="#btn_ReturnBooks_DashBoard" prefHeight="26.0" prefWidth="232.0" style="-fx-background-color: #ffc34d;" text="RETURN BOOKS" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </JFXButton>
+      <Pane fx:id="pane_return" layoutX="161.0" layoutY="141.0" prefHeight="393.0" prefWidth="725.0" style="-fx-background-color: rgba(100, 100, 100, 0.5);" visible="false">
+         <children>
+            <TableView layoutY="192.0" prefHeight="186.0" prefWidth="725.0" style="-fx-background-color: transparent;">
+              <columns>
+                <TableColumn prefWidth="88.0" text="Member ID" />
+                  <TableColumn prefWidth="98.0" text="Book ID" />
+                  <TableColumn prefWidth="131.0" text="Book Name" />
+                  <TableColumn prefWidth="164.0" text="Issue Date" />
+                  <TableColumn prefWidth="151.0" text="Return date" />
+                  <TableColumn prefWidth="92.0" text="Late days" />
+              </columns>
+            </TableView>
+            <JFXComboBox layoutX="61.0" layoutY="63.0" prefHeight="26.0" prefWidth="210.0" promptText="Select Issue ID" />
+            <JFXButton layoutX="287.0" layoutY="129.0" style="-fx-background-color: #ff5c33;" text="Return">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </JFXButton>
+            <Label layoutX="287.0" layoutY="14.0" text="Return Books" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Label>
+            <JFXButton layoutX="390.0" layoutY="129.0" onMouseClicked="#btn_Cancel_ReturnBooks_OnAction" style="-fx-background-color: #ff5c33;" text="Cancel">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </JFXButton>
+         </children>
+      </Pane>
+      <Pane fx:id="pane_img_DashBoard" layoutX="278.0" layoutY="161.0" prefHeight="360.0" prefWidth="524.0">
+         <children>
+            <ImageView fitHeight="361.0" fitWidth="531.0" layoutX="-6.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@image/library2.jpg" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>
