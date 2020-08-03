@@ -27,7 +27,7 @@
             <Font size="15.0" />
          </font>
       </JFXTextField>
-      <JFXTextField fx:id="txt_contact" focusColor="#2049c3" labelFloat="true" layoutX="80.0" layoutY="271.0" prefHeight="28.0" prefWidth="298.0" promptText="Enter Contact NO" unFocusColor="#f2f2f2">
+      <JFXTextField fx:id="txt_contact" focusColor="#2049c3" labelFloat="true" layoutX="80.0" layoutY="271.0" onAction="#txt_contact_OnAction" prefHeight="28.0" prefWidth="298.0" promptText="Enter Contact NO" unFocusColor="#f2f2f2">
          <font>
             <Font size="15.0" />
          </font>

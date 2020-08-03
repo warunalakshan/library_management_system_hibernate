@@ -6,10 +6,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #808080;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ShowMembersController">
    <children>
-      <TableView layoutX="5.0" layoutY="107.0" prefHeight="280.0" prefWidth="589.0" style="-fx-background-color: transparent;">
+      <TableView fx:id="tbl_AllMembers" layoutX="5.0" layoutY="107.0" prefHeight="280.0" prefWidth="589.0" style="-fx-background-color: transparent;">
         <columns>
           <TableColumn prefWidth="79.0" text="ID" />
           <TableColumn prefWidth="115.0" text="Name" />

@@ -51,7 +51,14 @@ public class AddMemberController {
     }
 
     public void btn_Save_OnAction(ActionEvent actionEvent) {
+        saveMember();
+    }
 
+    public void txt_contact_OnAction(ActionEvent actionEvent) {
+        saveMember();
+    }
+
+    private void saveMember(){
         if (lbl_MemberId.getText().equals("Member ID")){
             new Alert(Alert.AlertType.ERROR, "Please press Add New member Button and generate member ID..", ButtonType.OK).show();
             btn_AddNewMember.requestFocus();
@@ -84,8 +91,6 @@ public class AddMemberController {
         String address = txt_Address.getText();
         String contact = txt_contact.getText();
 
-        if (btn_Save.getText().equals("SAVE")) {
-
             try {
                 Connection connection = DBConnection.getInstance().getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO members values (?,?,?,?,?) ");
@@ -95,18 +100,19 @@ public class AddMemberController {
                 preparedStatement.setObject(4, address);
                 preparedStatement.setObject(5, contact);
                 preparedStatement.executeUpdate();
-                new Alert(Alert.AlertType.INFORMATION, "Successfully added...", ButtonType.OK).show();
+
 
 
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
-        }
+        new Alert(Alert.AlertType.INFORMATION, "Successfully added...", ButtonType.OK).show();
         txt_name.clear();
         txt_NIC.clear();
         txt_contact.clear();
         txt_Address.clear();
+        btn_AddNewMember.requestFocus();
 //        System.exit(0);
 
     }
