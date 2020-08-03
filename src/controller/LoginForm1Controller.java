@@ -110,6 +110,18 @@ public class LoginForm1Controller {
     }
 
     private void signUp() {
+
+        if (txt_UserName_SignUp.getText().trim().isEmpty()){
+            new Alert(Alert.AlertType.ERROR, "enter your username").show();
+            txt_UserName_SignUp.requestFocus();
+            return;
+        }
+        if (txt_Password_SignUp.getText().trim().isEmpty()){
+            new Alert(Alert.AlertType.ERROR, "enter password").show();
+            txt_Password_SignUp.requestFocus();
+            return;
+        }
+
         String userName = txt_UserName_SignUp.getText();
         String password = txt_Password_SignUp.getText();
 //        String id = txt_ID_SignUp.getText();
@@ -121,7 +133,10 @@ public class LoginForm1Controller {
             preparedStatement.setObject(1, userName);
             preparedStatement.setObject(2, password);
             preparedStatement.executeUpdate();
+
             new Alert(Alert.AlertType.INFORMATION, "Registration is successfully...!", ButtonType.OK).showAndWait();
+            pane_SignUp.setVisible(false);
+            pane_SignIn.setVisible(true);
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
