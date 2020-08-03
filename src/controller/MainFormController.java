@@ -106,6 +106,7 @@ public class MainFormController {
         Stage stage = (Stage)(this.root.getScene().getWindow());
         stage.setScene(mainScene);
         stage.centerOnScreen();
+        stage.setResizable(false);
     }
 
     public void btn_Cancel_BookIssue_OnAction(MouseEvent mouseEvent) {

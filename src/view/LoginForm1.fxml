@@ -18,7 +18,7 @@
       </ImageView>
       <Pane fx:id="pane_SignIn" layoutX="84.0" layoutY="90.0" prefHeight="342.0" prefWidth="577.0" style="-fx-background-color: rgba(100, 100, 100, 0.5);">
          <children>
-            <TextField fx:id="txt_userName" layoutX="34.0" layoutY="141.0" prefHeight="43.0" prefWidth="481.0" promptText="User Name">
+            <TextField fx:id="txt_userName_Login" layoutX="34.0" layoutY="141.0" prefHeight="43.0" prefWidth="481.0" promptText="User Name">
                <font>
                   <Font size="17.0" />
                </font></TextField>
@@ -47,7 +47,7 @@
                   <Font size="16.0" />
                </font>
             </Label>
-            <TextField fx:id="txt_Password" layoutX="34.0" layoutY="202.0" onAction="#txt_Password_OnAction" prefHeight="43.0" prefWidth="481.0" promptText="Password">
+            <TextField fx:id="txt_Password_Login" layoutX="34.0" layoutY="202.0" onAction="#txt_Password_Login_OnAction" prefHeight="43.0" prefWidth="481.0" promptText="Password">
                <font>
                   <Font size="17.0" />
                </font></TextField>
@@ -70,7 +70,7 @@
                   <Font name="System Bold" size="26.0" />
                </font>
             </Label>
-            <TextField fx:id="txt_NIC_SignUp" layoutX="34.0" layoutY="206.0" onAction="#txt_NIC_SignUp_OnAction" prefHeight="43.0" prefWidth="481.0" promptText="NIC">
+            <TextField fx:id="txt_ID_SignUp" layoutX="33.0" layoutY="81.0" prefHeight="20.0" prefWidth="481.0" promptText="ID">
                <font>
                   <Font size="17.0" />
                </font>
@@ -80,12 +80,12 @@
                   <Font name="System Bold" size="18.0" />
                </font>
             </Button>
-            <TextField fx:id="txt_Password_SignUp" layoutX="34.0" layoutY="146.0" prefHeight="43.0" prefWidth="481.0" promptText="Password">
+            <TextField fx:id="txt_Password_SignUp" layoutX="34.0" layoutY="167.0" onAction="#txt_password_SignUp_OnAction" prefHeight="13.0" prefWidth="481.0" promptText="Password">
                <font>
                   <Font size="17.0" />
                </font>
             </TextField>
-            <TextField fx:id="txt_UserName_SignUp" layoutX="34.0" layoutY="86.0" prefHeight="43.0" prefWidth="481.0" promptText="User Name">
+            <TextField fx:id="txt_UserName_SignUp" layoutX="34.0" layoutY="124.0" prefHeight="19.0" prefWidth="481.0" promptText="User Name">
                <font>
                   <Font size="17.0" />
                </font>
@@ -95,6 +95,11 @@
                   <Image url="@image/back.png" />
                </image>
             </ImageView>
+            <TextField layoutX="34.0" layoutY="211.0" prefHeight="13.0" prefWidth="481.0" promptText="NIC">
+               <font>
+                  <Font size="17.0" />
+               </font>
+            </TextField>
          </children>
       </Pane>
    </children>
