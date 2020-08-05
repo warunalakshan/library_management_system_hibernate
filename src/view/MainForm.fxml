@@ -16,15 +16,15 @@
    <children>
       <Pane fx:id="pane_Issue" layoutX="195.0" layoutY="171.0" onMouseClicked="#img_List" prefHeight="328.0" prefWidth="675.0" style="-fx-background-color: rgba(100, 100, 100, 0.5);" visible="false">
          <children>
-            <JFXComboBox layoutX="121.0" layoutY="72.0" prefHeight="26.0" prefWidth="287.0" promptText="Member ID" />
-            <JFXComboBox layoutX="121.0" layoutY="134.0" prefHeight="26.0" prefWidth="287.0" promptText="Book ID" />
-            <Label layoutX="568.0" layoutY="26.0" text="ISSUE ID">
+            <JFXComboBox fx:id="cmb_MemberID" layoutX="121.0" layoutY="72.0" prefHeight="26.0" prefWidth="287.0" promptText="Member ID" />
+            <JFXComboBox fx:id="cmb_BookID" layoutX="121.0" layoutY="134.0" prefHeight="26.0" prefWidth="287.0" promptText="Book ID" />
+            <Label fx:id="lbl_IssueID" layoutX="568.0" layoutY="26.0" text="ISSUE ID">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
             </Label>
-            <JFXDatePicker layoutX="121.0" layoutY="205.0" prefHeight="26.0" prefWidth="297.0" promptText="Date" />
-            <JFXButton layoutX="327.0" layoutY="271.0" prefHeight="26.0" prefWidth="107.0" style="-fx-background-color: #008000;" text="ISSUE" textFill="WHITE">
+            <JFXDatePicker fx:id="dtp_Date" layoutX="121.0" layoutY="205.0" prefHeight="26.0" prefWidth="297.0" promptText="Date" />
+            <JFXButton fx:id="btn_Issue" layoutX="327.0" layoutY="271.0" onAction="#btn_Issue_OnAction" prefHeight="26.0" prefWidth="107.0" style="-fx-background-color: #008000;" text="ISSUE" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
@@ -34,17 +34,12 @@
                   <Font name="System Bold" size="21.0" />
                </font>
             </Label>
-            <JFXButton fx:id="btn_Cancel_BookIssue" layoutX="449.0" layoutY="271.0" onMouseClicked="#btn_Cancel_BookIssue_OnAction" prefHeight="26.0" prefWidth="107.0" style="-fx-background-color: #008000;" text="CANCEL" textFill="WHITE">
+            <JFXButton fx:id="btn_Cancel_BookIssue" layoutX="449.0" layoutY="271.0" onAction="#btn_Cancel_Book_Issues_OnAction" prefHeight="26.0" prefWidth="107.0" style="-fx-background-color: #008000;" text="CANCEL" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
             </JFXButton>
          </children></Pane>
-      <ImageView fx:id="img_ListDown" fitHeight="54.0" fitWidth="68.0" layoutX="40.0" layoutY="6.0" onMouseClicked="#img_ListDown" pickOnBounds="true" preserveRatio="true" visible="false">
-         <image>
-            <Image url="@image/ListDown.png" />
-         </image>
-      </ImageView>
       <Pane fx:id="Pane_1_DashBoard" layoutX="7.0" layoutY="73.0" prefHeight="514.0" prefWidth="144.0" visible="false">
          <children>
             <ImageView fx:id="img_ShowMembers" fitHeight="71.0" fitWidth="81.0" layoutX="24.0" layoutY="199.0" onMouseClicked="#img_ShowMembers_OnAction" pickOnBounds="true" preserveRatio="true">
@@ -97,21 +92,6 @@
             </Label>
          </children>
       </Pane>
-      <ImageView fx:id="img_ListUp" fitHeight="54.0" fitWidth="68.0" layoutX="40.0" layoutY="6.0" onMouseClicked="#img_ListUp" pickOnBounds="true" preserveRatio="true" visible="false">
-         <image>
-            <Image url="@image/listUp.png" />
-         </image>
-      </ImageView>
-      <JFXButton layoutX="295.0" layoutY="47.0" onAction="#btn_BookIssue_DashBoard" prefHeight="26.0" prefWidth="232.0" style="-fx-background-color: #ffc34d;" text="BOOK ISSUE" textFill="WHITE">
-         <font>
-            <Font name="System Bold" size="13.0" />
-         </font>
-      </JFXButton>
-      <JFXButton layoutX="527.0" layoutY="47.0" onAction="#btn_ReturnBooks_DashBoard" prefHeight="26.0" prefWidth="232.0" style="-fx-background-color: #ffc34d;" text="RETURN BOOKS" textFill="WHITE">
-         <font>
-            <Font name="System Bold" size="13.0" />
-         </font>
-      </JFXButton>
       <Pane fx:id="pane_return" layoutX="161.0" layoutY="141.0" prefHeight="393.0" prefWidth="725.0" style="-fx-background-color: rgba(100, 100, 100, 0.5);" visible="false">
          <children>
             <TableView layoutY="192.0" prefHeight="186.0" prefWidth="725.0" style="-fx-background-color: transparent;">
@@ -135,7 +115,7 @@
                   <Font name="System Bold" size="20.0" />
                </font>
             </Label>
-            <JFXButton layoutX="390.0" layoutY="129.0" onMouseClicked="#btn_Cancel_ReturnBooks_OnAction" style="-fx-background-color: #ff5c33;" text="Cancel">
+            <JFXButton fx:id="btn_Cancel_returnBook" layoutX="390.0" layoutY="129.0" onAction="#btn_Cancel_ReturnBooks_OnAction" style="-fx-background-color: #ff5c33;" text="Cancel">
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>
@@ -151,5 +131,25 @@
             </ImageView>
          </children>
       </Pane>
+      <ImageView fx:id="img_ListUp" fitHeight="54.0" fitWidth="68.0" layoutX="40.0" layoutY="6.0" onMouseClicked="#img_ListUp" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@image/listUp.png" />
+         </image>
+      </ImageView>
+      <JFXButton layoutX="295.0" layoutY="47.0" onAction="#btn_BookIssue_DashBoard" prefHeight="26.0" prefWidth="232.0" style="-fx-background-color: #ffc34d;" text="BOOK ISSUE" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </JFXButton>
+      <JFXButton layoutX="527.0" layoutY="47.0" onAction="#btn_ReturnBooks_DashBoard" prefHeight="26.0" prefWidth="232.0" style="-fx-background-color: #ffc34d;" text="RETURN BOOKS" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </JFXButton>
+      <ImageView fx:id="img_ListDown" fitHeight="54.0" fitWidth="68.0" layoutX="40.0" layoutY="6.0" onMouseClicked="#img_ListDown" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@image/ListDown.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

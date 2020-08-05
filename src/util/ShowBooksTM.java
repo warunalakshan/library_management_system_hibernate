@@ -60,12 +60,6 @@ public class ShowBooksTM {
 
     @Override
     public String toString() {
-        return "ShowBooksTM{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", author='" + author + '\'' +
-                ", qty=" + qty +
-                ", isbn='" + isbn + '\'' +
-                '}';
+        return id;
     }
 }
