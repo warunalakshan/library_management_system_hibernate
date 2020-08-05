@@ -64,35 +64,6 @@ public class ShowMembersController {
         loadMembers();
     }
 
-
-    private void loadMembers(){
-        try{
-            Connection connection = DBConnection.getInstance().getConnection();
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("select * from members");
-            tbl_AllMembers.getItems().clear();
-            tbl_AllMembersShow.getItems().clear();
-            while (resultSet.next()){
-                String id = resultSet.getString(1);
-                String name = resultSet.getString(2);
-                String nic = resultSet.getString(3);
-                String address = resultSet.getString(4);
-                String contact = resultSet.getString(5);
-
-                ShowMembersTM membersTM = new ShowMembersTM(id, name, nic, address, contact);
-                tbl_AllMembers.getItems().add(membersTM);
-                tbl_AllMembersShow.getItems().add(membersTM);
-                tbl_AllMembersShow.refresh();
-                tbl_AllMembers.refresh();
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
-    }
-
     public void btn_Update_OnAction(ActionEvent actionEvent) {
 
         if (txt_Name.getText().trim().isEmpty()){
@@ -170,4 +141,34 @@ public class ShowMembersController {
         pane_Show.setVisible(false);
         pane_Update.setVisible(true);
     }
+
+
+    private void loadMembers(){
+        try{
+            Connection connection = DBConnection.getInstance().getConnection();
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("select * from members");
+            tbl_AllMembers.getItems().clear();
+            tbl_AllMembersShow.getItems().clear();
+            while (resultSet.next()){
+                String id = resultSet.getString(1);
+                String name = resultSet.getString(2);
+                String nic = resultSet.getString(3);
+                String address = resultSet.getString(4);
+                String contact = resultSet.getString(5);
+
+                ShowMembersTM membersTM = new ShowMembersTM(id, name, nic, address, contact);
+                tbl_AllMembers.getItems().add(membersTM);
+                tbl_AllMembersShow.getItems().add(membersTM);
+                tbl_AllMembersShow.refresh();
+                tbl_AllMembers.refresh();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
 }
