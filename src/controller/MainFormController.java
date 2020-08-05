@@ -11,16 +11,23 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import util.ReturnDetailsTM;
 import util.ShowBooksTM;
 import util.ShowMembersTM;
 
 import java.io.IOException;
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.Calendar;
 
 public class MainFormController {
     public AnchorPane root;
@@ -41,11 +48,25 @@ public class MainFormController {
     public JFXDatePicker dtp_Date;
     public JFXButton btn_Issue;
     public JFXButton btn_Cancel_returnBook;
+    public Label lbl_returnDate;
+    public TableView <ReturnDetailsTM>tbl_Return;
+    public JFXComboBox cmb_IssueID_Return;
+    public JFXButton btn_return;
 
     public void initialize(){
         img_ListDown.setVisible(true);
+
+        tbl_Return.getColumns().get(0).setCellValueFactory(new PropertyValueFactory<>("issueID"));
+        tbl_Return.getColumns().get(1).setCellValueFactory(new PropertyValueFactory<>("memberID"));
+        tbl_Return.getColumns().get(2).setCellValueFactory(new PropertyValueFactory<>("bookID"));
+        tbl_Return.getColumns().get(3).setCellValueFactory(new PropertyValueFactory<>("bookName"));
+        tbl_Return.getColumns().get(4).setCellValueFactory(new PropertyValueFactory<>("issueDate"));
+        tbl_Return.getColumns().get(5).setCellValueFactory(new PropertyValueFactory<>("returnDate"));
+        tbl_Return.getColumns().get(6).setCellValueFactory(new PropertyValueFactory<>("lateDays"));
+
         loadBooks();
         loadMembers();
+        loadTable();
     }
 
     public void img_List(MouseEvent mouseEvent) {
@@ -159,6 +180,22 @@ public class MainFormController {
 
     }
 
+    public void btn_Return_OnAction(ActionEvent actionEvent) {
+        String id = String.valueOf(cmb_IssueID_Return.getSelectionModel().getSelectedItem());
+
+        try{
+            Connection connection = DBConnection.getInstance().getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement("DELETE from issue where issue_id =?");
+            preparedStatement.setObject(1, id);
+            preparedStatement.executeUpdate();
+            loadTable();
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        cmb_IssueID_Return.getSelectionModel().clearSelection();
+    }
+
     public void btn_Cancel_ReturnBooks_OnAction(ActionEvent actionEvent) {
         pane_return.setVisible(false);
         pane_img_DashBoard.setVisible(true);
@@ -183,18 +220,6 @@ public class MainFormController {
                     lbl_IssueID.setText("ISSUE/" + newCode);
                 }
             }
-
-       /* }else{
-            String lastCode = resultSet.getString(1);
-            String substring = lastCode.substring(1,4);
-            int newCode = Integer.parseInt(substring) + 1;
-            if (newCode < 10){
-                lbl_BookId.setText("B00" + newCode);
-            }else if (newCode < 100){
-                lbl_BookId.setText("B0" + newCode);
-            }else {
-                lbl_BookId.setText("B" + newCode);
-            }*/
 
 
         } catch (SQLException throwables) {
@@ -223,6 +248,7 @@ public class MainFormController {
             throwables.printStackTrace();
         }
     }
+
     private void loadMembers(){
         try{
             Connection connection = DBConnection.getInstance().getConnection();
@@ -245,6 +271,40 @@ public class MainFormController {
         }
 
 
+    }
+
+    private void loadTable(){
+        try{
+            Connection connection = DBConnection.getInstance().getConnection();
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("select i.issue_id, i.member_id, i.book_id, b.book_name, i.issue_date from issue i\n" +
+                    "INNER join books b on i.book_id = b.book_id ");
+            tbl_Return.getItems().clear();
+            while (resultSet.next()){
+                String id = resultSet.getString(1);
+                String Mid = resultSet.getString(2);
+                String Bid = resultSet.getString(3);
+                String Bname = resultSet.getString(4);
+                Date date = resultSet.getDate(5);
+
+                //Difference between Days
+                LocalDate Today = LocalDate.now();
+                LocalDate next2Week = Today.plus(2, ChronoUnit.WEEKS);
+
+                LocalDate today = LocalDate.now();
+                long diffInDays = ChronoUnit.DAYS.between(date.toLocalDate(), today);
+
+                ReturnDetailsTM returnDetailsTM = new ReturnDetailsTM(id, Mid, Bid, Bname, date, next2Week, diffInDays);
+                tbl_Return.getItems().add(returnDetailsTM);
+                cmb_IssueID_Return.getItems().add(returnDetailsTM);
+                tbl_Return.refresh();
+
+
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 
 }
