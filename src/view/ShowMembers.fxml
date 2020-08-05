@@ -1,23 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #808080;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ShowMembersController">
    <children>
-      <TableView fx:id="tbl_AllMembers" layoutX="5.0" layoutY="107.0" prefHeight="280.0" prefWidth="589.0" style="-fx-background-color: transparent;">
-        <columns>
-          <TableColumn prefWidth="79.0" text="ID" />
-          <TableColumn prefWidth="115.0" text="Name" />
-            <TableColumn prefWidth="170.0" text="Address" />
-            <TableColumn prefWidth="113.0" text="Contact" />
-            <TableColumn prefWidth="111.0" text="NIC" />
-        </columns>
-      </TableView>
-      <Label layoutX="208.0" layoutY="24.0" text="ALL MEMBERS">
+      <Pane fx:id="pane_Update" layoutY="41.0" prefHeight="365.0" prefWidth="600.0" visible="false">
+         <children>
+            <TableView fx:id="tbl_AllMembers" layoutY="165.0" prefHeight="193.0" prefWidth="600.0" style="-fx-background-color: transparent;">
+              <columns>
+                <TableColumn prefWidth="79.0" text="ID" />
+                <TableColumn prefWidth="120.0" text="Name" />
+                  <TableColumn prefWidth="171.0" text="Address" />
+                  <TableColumn prefWidth="114.0" text="NIC" />
+                  <TableColumn prefWidth="115.0" text="Contact" />
+              </columns>
+            </TableView>
+            <JFXTextField fx:id="txt_Name" focusColor="#2146b5" labelFloat="true" layoutX="72.0" layoutY="33.0" prefHeight="26.0" prefWidth="191.0" promptText="Name" unFocusColor="#1148d3" />
+            <JFXTextField fx:id="txt_Address" focusColor="#244abc" labelFloat="true" layoutX="72.0" layoutY="84.0" prefHeight="26.0" prefWidth="191.0" promptText="Address" unFocusColor="#1148d3" />
+            <JFXTextField fx:id="txt_Contact" focusColor="#1d41ae" labelFloat="true" layoutX="341.0" layoutY="85.0" prefHeight="26.0" prefWidth="191.0" promptText="Contact" unFocusColor="#1148d3" />
+            <JFXTextField fx:id="txt_NIC" focusColor="#1d46c3" labelFloat="true" layoutX="341.0" layoutY="33.0" prefHeight="26.0" prefWidth="191.0" promptText="NIC" unFocusColor="#1148d3" />
+            <Label fx:id="lbl_memberID" layoutX="33.0" layoutY="3.0" text="Member ID">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Button fx:id="btn_Update" layoutX="414.0" layoutY="129.0" mnemonicParsing="false" onAction="#btn_Update_OnAction" style="-fx-background-color: #00cc00;" text="UPDATE">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Button>
+            <Button fx:id="btn_Delete" layoutX="506.0" layoutY="130.0" mnemonicParsing="false" onAction="#btn_Delete_OnAction" prefHeight="26.0" prefWidth="77.0" style="-fx-background-color: #e63900;" text="DELETE">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Button>
+         </children>
+      </Pane>
+      <Pane fx:id="pane_Show" layoutX="-1.0" layoutY="50.0" prefHeight="352.0" prefWidth="600.0">
+         <children>
+            <TableView fx:id="tbl_AllMembersShow" layoutX="2.0" layoutY="16.0" prefHeight="289.0" prefWidth="600.0" style="-fx-background-color: transparent;">
+               <columns>
+                  <TableColumn prefWidth="79.0" text="ID" />
+                  <TableColumn prefWidth="120.0" text="Name" />
+                  <TableColumn prefWidth="171.0" text="Address" />
+                  <TableColumn prefWidth="114.0" text="NIC" />
+                  <TableColumn prefWidth="115.0" text="Contact" />
+               </columns>
+            </TableView>
+            <Button layoutX="205.0" layoutY="312.0" mnemonicParsing="false" onAction="#btn_UpdateOrDelete" style="-fx-background-color: #0033cc;" text="Update Or delete Members" textFill="WHITE" />
+         </children>
+      </Pane>
+      <Label layoutX="217.0" layoutY="10.0" text="ALL MEMBERS">
          <font>
             <Font name="System Bold" size="23.0" />
          </font>

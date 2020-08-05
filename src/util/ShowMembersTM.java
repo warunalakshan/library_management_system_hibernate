@@ -3,18 +3,18 @@ package util;
 public class ShowMembersTM {
     private String id;
     private String name;
-    private String nic;
     private String address;
+    private String nic;
     private String contact;
 
     public ShowMembersTM() {
     }
 
-    public ShowMembersTM(String id, String name, String nic, String address, String contact) {
+    public ShowMembersTM(String id, String name, String address, String nic, String contact) {
         this.setId(id);
         this.setName(name);
-        this.setNic(nic);
         this.setAddress(address);
+        this.setNic(nic);
         this.setContact(contact);
     }
 
@@ -34,20 +34,20 @@ public class ShowMembersTM {
         this.name = name;
     }
 
-    public String getNic() {
-        return nic;
-    }
-
-    public void setNic(String nic) {
-        this.nic = nic;
-    }
-
     public String getAddress() {
         return address;
     }
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getNic() {
+        return nic;
+    }
+
+    public void setNic(String nic) {
+        this.nic = nic;
     }
 
     public String getContact() {
@@ -63,8 +63,8 @@ public class ShowMembersTM {
         return "ShowMembersTM{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
-                ", nic='" + nic + '\'' +
                 ", address='" + address + '\'' +
+                ", nic='" + nic + '\'' +
                 ", contact='" + contact + '\'' +
                 '}';
     }

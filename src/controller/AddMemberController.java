@@ -96,8 +96,8 @@ public class AddMemberController {
                 PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO members values (?,?,?,?,?) ");
                 preparedStatement.setObject(1, id);
                 preparedStatement.setObject(2, name);
-                preparedStatement.setObject(3, NIC);
-                preparedStatement.setObject(4, address);
+                preparedStatement.setObject(3, address);
+                preparedStatement.setObject(4, NIC);
                 preparedStatement.setObject(5, contact);
                 preparedStatement.executeUpdate();
 
