@@ -57,6 +57,7 @@ public class MainFormController {
     public JFXButton btn_return;
     public JFXTextField txt_Fee;
     public Label lbl_fee;
+    public Label lbl_feeDetail;
 
     public void initialize(){
         img_ListDown.setVisible(true);
@@ -73,20 +74,7 @@ public class MainFormController {
         loadMembers();
         loadTable();
 
-        tbl_Return.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<ReturnDetailsTM>() {
-            @Override
-            public void changed(ObservableValue<? extends ReturnDetailsTM> observable, ReturnDetailsTM oldValue, ReturnDetailsTM newValue) {
-                if (newValue == null){
 
-                }else {
-                    if (newValue.getLateDays() > 14){
-                        txt_Fee.setText("Rs : 50.00");
-                    }else{
-                        txt_Fee.setText("Rs : 00.00");
-                    }
-                }
-            }
-        });
 
         cmb_IssueID_Return.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<ReturnDetailsTM>() {
             @Override
@@ -95,18 +83,21 @@ public class MainFormController {
 
                 }else {
                     if (newValue.getLateDays() > 14){
-                        lbl_fee.setText(" You have to pay a fine Rs : 50.00");
+                        lbl_feeDetail.setVisible(true);
+                        lbl_feeDetail.setText("Member have to pay a fine Rs :");
+                        lbl_fee.setText(" 50.00");
                         lbl_fee.setStyle("-fx-text-fill: #990000");
+                        lbl_fee.setVisible(true);
                     }else{
-                        lbl_fee.setText("You do not have to pay a fine");
-                        lbl_fee.setStyle("-fx-text-fill: Black");
+                        lbl_feeDetail.setText("You do not have to pay a fine");
+                        lbl_fee.setText("00.00");
+                        lbl_fee.setVisible(false);
+
                     }
                 }
             }
         });
-
     }
-
 
 
     public void img_List(MouseEvent mouseEvent) {
@@ -209,33 +200,18 @@ public class MainFormController {
             preparedStatement.setObject(4, dtp_Date.getValue());
             preparedStatement.executeUpdate();
 
-
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
         new Alert(Alert.AlertType.INFORMATION, "Issue successfully", ButtonType.OK).show();
         pane_Issue.setVisible(false);
         pane_img_DashBoard.setVisible(true);
-
-
     }
 
     public void btn_Return_OnAction(ActionEvent actionEvent) {
-        String id = String.valueOf(cmb_IssueID_Return.getSelectionModel().getSelectedItem());
-
-        try{
-            Connection connection = DBConnection.getInstance().getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("DELETE from issue where issue_id =?");
-            preparedStatement.setObject(1, id);
-            preparedStatement.executeUpdate();
-            loadTable();
-
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        cmb_IssueID_Return.getSelectionModel().clearSelection();
+        returnBook_deleteTable();
+//        returnBook_insertTable();
     }
-
     public void btn_Cancel_ReturnBooks_OnAction(ActionEvent actionEvent) {
         pane_return.setVisible(false);
         pane_img_DashBoard.setVisible(true);
@@ -341,14 +317,49 @@ public class MainFormController {
                 tbl_Return.getItems().add(returnDetailsTM);
                 cmb_IssueID_Return.getItems().add(returnDetailsTM);
                 tbl_Return.refresh();
-
-
             }
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
     }
+
+    private void returnBook_deleteTable(){
+        String id = String.valueOf(cmb_IssueID_Return.getSelectionModel().getSelectedItem());
+
+        try{
+            Connection connection = DBConnection.getInstance().getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement("DELETE from issue where issue_id =?");
+            preparedStatement.setObject(1, id);
+            preparedStatement.executeUpdate();
+            loadTable();
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        cmb_IssueID_Return.getSelectionModel().clearSelection();
+    }
+
+    private void returnBook_insertTable(){
+
+        String id = String.valueOf(cmb_IssueID_Return.getSelectionModel().getSelectedItem());
+        LocalDate Today = LocalDate.now();
+        Double fee = Double.valueOf(lbl_fee.getText());
+
+        try{
+            Connection connection = DBConnection.getInstance().getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement("Insert into returns values(?,?,?)");
+            preparedStatement.setObject(1,id);
+            preparedStatement.setObject(2,Today);
+            preparedStatement.setObject(3, fee);
+            preparedStatement.executeUpdate();
+            new Alert(Alert.AlertType.INFORMATION, "Lk").show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
     /*private void calculateQty(ShowBooksTM showBooksTM) {
         for (ReturnDetailsTM orderDetails : tbl_Return.getItems()) {

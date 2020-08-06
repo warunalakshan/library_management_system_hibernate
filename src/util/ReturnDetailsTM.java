@@ -16,13 +16,6 @@ public class ReturnDetailsTM {
         return returnDate;
     }
 
-    public void setReturnDate(LocalDate returnDate) {
-        this.returnDate = returnDate;
-    }
-
-    public ReturnDetailsTM() {
-    }
-
     public ReturnDetailsTM(String issueID, String memberID, String bookID, String bookName, Date issueDate, LocalDate returnDate, long lateDays) {
         this.issueID = issueID;
         this.memberID = memberID;
@@ -73,6 +66,10 @@ public class ReturnDetailsTM {
         this.issueDate = issueDate;
     }
 
+    public void setReturnDate(LocalDate returnDate) {
+        this.returnDate = returnDate;
+    }
+
     public long getLateDays() {
         return lateDays;
     }
@@ -83,6 +80,6 @@ public class ReturnDetailsTM {
 
     @Override
     public String toString() {
-        return  issueID ;
+        return issueID;
     }
 }
