@@ -97,7 +97,7 @@
             </Label>
          </children>
       </Pane>
-      <Pane fx:id="pane_return" layoutX="161.0" layoutY="141.0" prefHeight="393.0" prefWidth="725.0" style="-fx-background-color: rgba(100, 100, 100, 0.5);">
+      <Pane fx:id="pane_return" layoutX="161.0" layoutY="141.0" prefHeight="393.0" prefWidth="725.0" style="-fx-background-color: rgba(100, 100, 100, 0.5);" visible="false">
          <children>
             <TableView fx:id="tbl_Return" layoutY="192.0" prefHeight="186.0" prefWidth="725.0" style="-fx-background-color: transparent;">
               <columns>
@@ -111,7 +111,7 @@
               </columns>
             </TableView>
             <JFXComboBox fx:id="cmb_IssueID_Return" layoutX="61.0" layoutY="63.0" prefHeight="26.0" prefWidth="210.0" promptText="Select Issue ID" />
-            <JFXButton fx:id="btn_return" layoutX="287.0" layoutY="129.0" onAction="#btn_Return_OnAction" style="-fx-background-color: #ff5c33;" text="Return">
+            <JFXButton fx:id="btn_return" layoutX="474.0" layoutY="144.0" onAction="#btn_Return_OnAction" style="-fx-background-color: #ff5c33;" text="Return">
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>
@@ -121,15 +121,16 @@
                   <Font name="System Bold" size="20.0" />
                </font>
             </Label>
-            <JFXButton fx:id="btn_Cancel_returnBook" layoutX="390.0" layoutY="129.0" onAction="#btn_Cancel_ReturnBooks_OnAction" style="-fx-background-color: #ff5c33;" text="Cancel">
+            <JFXButton fx:id="btn_Cancel_returnBook" layoutX="580.0" layoutY="144.0" onAction="#btn_Cancel_ReturnBooks_OnAction" style="-fx-background-color: #ff5c33;" text="Cancel">
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>
             </JFXButton>
             <Label layoutX="12.0" layoutY="167.0" text="All Issues details" textFill="WHITE" />
+            <Label fx:id="lbl_fee" layoutX="51.0" layoutY="117.0" prefHeight="19.0" prefWidth="21.0" />
          </children>
       </Pane>
-      <Pane fx:id="pane_img_DashBoard" layoutX="278.0" layoutY="161.0" prefHeight="360.0" prefWidth="524.0" visible="false">
+      <Pane fx:id="pane_img_DashBoard" layoutX="278.0" layoutY="161.0" prefHeight="360.0" prefWidth="524.0">
          <children>
             <ImageView fitHeight="361.0" fitWidth="531.0" layoutX="-6.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true">
                <image>

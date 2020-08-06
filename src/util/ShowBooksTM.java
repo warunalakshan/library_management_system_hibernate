@@ -1,6 +1,7 @@
 package util;
 
 public class ShowBooksTM {
+
     private String id;
     private String name;
     private String author;
@@ -11,11 +12,11 @@ public class ShowBooksTM {
     }
 
     public ShowBooksTM(String id, String name, String author, int qty, String isbn) {
-        this.setId(id);
-        this.setName(name);
-        this.setAuthor(author);
-        this.setQty(qty);
-        this.setIsbn(isbn);
+        this.id = id;
+        this.name = name;
+        this.author = author;
+        this.qty = qty;
+        this.isbn = isbn;
     }
 
     public String getId() {

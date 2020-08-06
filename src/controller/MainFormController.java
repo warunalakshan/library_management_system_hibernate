@@ -3,7 +3,10 @@ package controller;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
+import com.jfoenix.controls.JFXTextField;
 import db.DBConnection;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -52,6 +55,8 @@ public class MainFormController {
     public TableView <ReturnDetailsTM>tbl_Return;
     public JFXComboBox cmb_IssueID_Return;
     public JFXButton btn_return;
+    public JFXTextField txt_Fee;
+    public Label lbl_fee;
 
     public void initialize(){
         img_ListDown.setVisible(true);
@@ -67,7 +72,42 @@ public class MainFormController {
         loadBooks();
         loadMembers();
         loadTable();
+
+        tbl_Return.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<ReturnDetailsTM>() {
+            @Override
+            public void changed(ObservableValue<? extends ReturnDetailsTM> observable, ReturnDetailsTM oldValue, ReturnDetailsTM newValue) {
+                if (newValue == null){
+
+                }else {
+                    if (newValue.getLateDays() > 14){
+                        txt_Fee.setText("Rs : 50.00");
+                    }else{
+                        txt_Fee.setText("Rs : 00.00");
+                    }
+                }
+            }
+        });
+
+        cmb_IssueID_Return.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<ReturnDetailsTM>() {
+            @Override
+            public void changed(ObservableValue<? extends ReturnDetailsTM> observable, ReturnDetailsTM oldValue, ReturnDetailsTM newValue) {
+                if (newValue == null){
+
+                }else {
+                    if (newValue.getLateDays() > 14){
+                        lbl_fee.setText(" You have to pay a fine Rs : 50.00");
+                        lbl_fee.setStyle("-fx-text-fill: #990000");
+                    }else{
+                        lbl_fee.setText("You do not have to pay a fine");
+                        lbl_fee.setStyle("-fx-text-fill: Black");
+                    }
+                }
+            }
+        });
+
     }
+
+
 
     public void img_List(MouseEvent mouseEvent) {
         Pane_1_DashBoard.setVisible(true);
@@ -264,6 +304,7 @@ public class MainFormController {
 
                 ShowMembersTM membersTM = new ShowMembersTM(id, name, nic, address, contact);
                 cmb_MemberID.getItems().add(membersTM);
+
             }
 
         } catch (Exception e) {
@@ -280,6 +321,7 @@ public class MainFormController {
             ResultSet resultSet = statement.executeQuery("select i.issue_id, i.member_id, i.book_id, b.book_name, i.issue_date from issue i\n" +
                     "INNER join books b on i.book_id = b.book_id ");
             tbl_Return.getItems().clear();
+            cmb_IssueID_Return.getItems().clear();
             while (resultSet.next()){
                 String id = resultSet.getString(1);
                 String Mid = resultSet.getString(2);
@@ -290,6 +332,7 @@ public class MainFormController {
                 //Difference between Days
                 LocalDate Today = LocalDate.now();
                 LocalDate next2Week = Today.plus(2, ChronoUnit.WEEKS);
+//                lbl_returnDate.setText(String.valueOf(next2Week));
 
                 LocalDate today = LocalDate.now();
                 long diffInDays = ChronoUnit.DAYS.between(date.toLocalDate(), today);
@@ -306,6 +349,16 @@ public class MainFormController {
             throwables.printStackTrace();
         }
     }
+
+    /*private void calculateQty(ShowBooksTM showBooksTM) {
+        for (ReturnDetailsTM orderDetails : tbl_Return.getItems()) {
+            if (orderDetails.getBookID().equals(ShowBooksTM.getId())) {
+                int qty = Integer.parseInt(ShowBooksTM.getQty()) - orderDetails.getQuantity();
+                txtQOH.setText(qty + "");
+                break;
+            }
+        }
+    }*/
 
 }
 
