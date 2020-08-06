@@ -31,12 +31,12 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <Button fx:id="btn_Update" layoutX="414.0" layoutY="129.0" mnemonicParsing="false" onAction="#btn_Update_OnAction" style="-fx-background-color: #00cc00;" text="UPDATE">
+            <Button fx:id="btn_Update" layoutX="414.0" layoutY="129.0" mnemonicParsing="false" onAction="#btn_Update_OnAction" style="-fx-background-color: #002b80;" text="UPDATE" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>
             </Button>
-            <Button fx:id="btn_Delete" layoutX="506.0" layoutY="130.0" mnemonicParsing="false" onAction="#btn_Delete_OnAction" prefHeight="26.0" prefWidth="77.0" style="-fx-background-color: #e63900;" text="DELETE">
+            <Button fx:id="btn_Delete" layoutX="506.0" layoutY="130.0" mnemonicParsing="false" onAction="#btn_Delete_OnAction" prefHeight="26.0" prefWidth="77.0" style="-fx-background-color: #cc0000;" text="DELETE" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>

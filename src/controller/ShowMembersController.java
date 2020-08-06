@@ -127,8 +127,8 @@ public class ShowMembersController {
             preparedStatement.executeUpdate();
             loadMembers();
 
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
         }
         txt_Name.clear();
         txt_Contact.clear();
@@ -164,8 +164,8 @@ public class ShowMembersController {
                 tbl_AllMembers.refresh();
             }
 
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
         }
 
 
