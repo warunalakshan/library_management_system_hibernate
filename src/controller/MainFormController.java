@@ -210,7 +210,7 @@ public class MainFormController {
 
     public void btn_Return_OnAction(ActionEvent actionEvent) {
         returnBook_deleteTable();
-//        returnBook_insertTable();
+        returnBook_insertTable();
     }
     public void btn_Cancel_ReturnBooks_OnAction(ActionEvent actionEvent) {
         pane_return.setVisible(false);
