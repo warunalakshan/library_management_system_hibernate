@@ -1,5 +1,6 @@
 package controller;
 
+import business.BusinessLogic;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import db.DBConnection;
@@ -24,28 +25,8 @@ public class AddBookController {
     public JFXButton btn_Save;
 
     public void btn_Add_new_OnAction(ActionEvent actionEvent) {
-        try{
-            Connection connection = DBConnection.getInstance().getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("select book_id from books order by book_id desc limit 1");
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (!resultSet.next()){
-                lbl_BookId.setText("B001");
-            }else{
-                String lastCode = resultSet.getString(1);
-                String substring = lastCode.substring(1,4);
-                int newCode = Integer.parseInt(substring) + 1;
-                if (newCode < 10){
-                    lbl_BookId.setText("B00" + newCode);
-                }else if (newCode < 100){
-                    lbl_BookId.setText("B0" + newCode);
-                }else {
-                    lbl_BookId.setText("B" + newCode);
-                }
-            }
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        lbl_BookId.setText(BusinessLogic.getNewCustomerId());
 
     }
 
@@ -85,24 +66,18 @@ public class AddBookController {
             return;
         }
 
-        String id = lbl_BookId.getText();
-        String name = txt_Name.getText();
-        String author = txt_Author.getText();
-        int qty = Integer.parseInt(txt_Quantity.getText());
-        String isbn = txt_ISBN.getText();
+//        String id = lbl_BookId.getText();
+//        String name = txt_Name.getText();
+//        String author = txt_Author.getText();
+//        int qty = Integer.parseInt(txt_Quantity.getText());
+//        String isbn = txt_ISBN.getText();
 
-        try{
-            PreparedStatement preparedStatement = DBConnection.getInstance().getConnection().prepareStatement("INSERT INTO books VALUES (?,?,?,?,?)");
-            preparedStatement.setObject(1, id);
-            preparedStatement.setObject(2,name);
-            preparedStatement.setObject(3, author);
-            preparedStatement.setObject(4,qty);
-            preparedStatement.setObject(5,isbn);
-            preparedStatement.executeUpdate();
+        BusinessLogic.saveCustomer(lbl_BookId.getText(),
+                txt_Name.getText(),
+                txt_Author.getText(),
+                Integer.parseInt(txt_Quantity.getText()),
+                txt_ISBN.getText());
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         new Alert(Alert.AlertType.INFORMATION, "Successfully added..", ButtonType.OK).show();
         txt_Name.clear();
         txt_Author.clear();
