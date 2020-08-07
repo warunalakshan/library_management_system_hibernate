@@ -26,7 +26,7 @@ public class AddBookController {
 
     public void btn_Add_new_OnAction(ActionEvent actionEvent) {
 
-        lbl_BookId.setText(BusinessLogic.getNewCustomerId());
+        lbl_BookId.setText(BusinessLogic.getNewBookId());
 
     }
 
@@ -66,13 +66,13 @@ public class AddBookController {
             return;
         }
 
-//        String id = lbl_BookId.getText();
-//        String name = txt_Name.getText();
-//        String author = txt_Author.getText();
-//        int qty = Integer.parseInt(txt_Quantity.getText());
-//        String isbn = txt_ISBN.getText();
+        String id = lbl_BookId.getText();
+        String name = txt_Name.getText();
+        String author = txt_Author.getText();
+        int qty = Integer.parseInt(txt_Quantity.getText());
+        String isbn = txt_ISBN.getText();
 
-        BusinessLogic.saveCustomer(lbl_BookId.getText(),
+        BusinessLogic.SaveBook(lbl_BookId.getText(),
                 txt_Name.getText(),
                 txt_Author.getText(),
                 Integer.parseInt(txt_Quantity.getText()),
