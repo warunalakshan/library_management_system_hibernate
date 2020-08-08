@@ -1,41 +1,62 @@
 package dao.custom.impl;
 
-import db.DBConnection;
+
+
+import dao.CrudUtil;
+import dao.custom.membersDAO;
 import entity.members;
 
-import java.sql.*;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
-public class membersDAOImpl {
+public class membersDAOImpl implements membersDAO {
 
-    public static boolean SaveMembers(members member) {
-        try {
-            Connection connection = DBConnection.getInstance().getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO members values (?,?,?,?,?) ");
-            preparedStatement.setObject(1, member.getId());
-            preparedStatement.setObject(2, member.getName());
-            preparedStatement.setObject(3, member.getAddress());
-            preparedStatement.setObject(4, member.getNic());
-            preparedStatement.setObject(5, member.getContact());
-            return preparedStatement.executeUpdate() > 0;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
+    @Override
+    public String getLastCustomerID() throws Exception {
+        ResultSet resultSet = CrudUtil.execute("Select * from members order by member_id desc limit 1");
+        if (resultSet.next()) {
+            return resultSet.getString(1);
+        } else {
+            return null;
         }
     }
 
-    public static String getMemberID() {
-        try {
-            Connection connection = DBConnection.getInstance().getConnection();
-            Statement stm = connection.createStatement();
-            ResultSet rst = stm.executeQuery("SELECT * FROM members ORDER BY member_id DESC LIMIT 1");
-            if (!rst.next()){
-                return null;
-            }else{
-                return rst.getString(1);
-            }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-            return null;
+    @Override
+    public List<members> findAll() throws Exception {
+
+        ResultSet resultSet = CrudUtil.execute("select * from members");
+        List<members> membersList = new ArrayList<>();
+        while (resultSet.next()){
+            membersList.add(new members(resultSet.getString(1),
+                    resultSet.getString(2),
+                    resultSet.getString(3),
+                    resultSet.getString(4),
+                    resultSet.getString(5)));
         }
+        return membersList;
+    }
+
+    @Override
+    public members find(String pk) throws Exception {
+        return null;
+    }
+
+    @Override
+    public boolean add(members entity) throws Exception {
+        return CrudUtil.execute("insert into members values (?,?,?,?,?)",
+                entity.getId(), entity.getName(), entity.getAddress(), entity.getNic(), entity.getContact());
+    }
+
+    @Override
+    public boolean update(members entity) throws Exception {
+        return CrudUtil.execute("update members set name = ?, address =?," +
+                "nic=?, contact=? where member_id =?", entity.getName(),
+                entity.getAddress(), entity.getNic(), entity.getContact(), entity.getId());
+    }
+
+    @Override
+    public boolean delete(String pk) throws Exception {
+        return CrudUtil.execute("delete from members where member_id =?", pk);
     }
 }

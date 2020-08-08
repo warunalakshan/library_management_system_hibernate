@@ -1,3 +1,4 @@
+/*
 package business;
 
 import dao.booksDAO;
@@ -53,12 +54,14 @@ public class BusinessLogic {
     }
 
 //    public static List<ShowBooksTM> getAllBooks() {
-      /*  List<books> allBooks = booksDAO.findAllCustomers();
+      */
+/*  List<books> allBooks = booksDAO.findAllCustomers();
         List<ShowBooksTM> Books = new ArrayList<>();
         for (books book : allBooks) {
             Books.add(new ShowBooksTM(book.getId(), book.getName(), book.getAuthor(), book.getQty(), book.getIsbn()));
         }
-        return Books*/;
+        return Books*//*
+;
 
     public static List<ShowBooksTM> getAllCustomers(){
 
@@ -90,3 +93,4 @@ public class BusinessLogic {
     }
 
 }
+*/

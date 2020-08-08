@@ -1,4 +1,10 @@
-package dao;
+package dao.custom;
 
-public interface membersDAO extends superDAO{
+import dao.CrudDAO;
+import dao.superDAO;
+import entity.members;
+
+public interface membersDAO extends CrudDAO<members, String > {
+    public String getLastCustomerID() throws Exception;
+
 }
