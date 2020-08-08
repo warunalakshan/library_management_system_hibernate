@@ -1,11 +1,11 @@
-package dao;
+package dao.custom.impl;
 
 import db.DBConnection;
 import entity.members;
 
 import java.sql.*;
 
-public class membersDAO {
+public class membersDAOImpl {
 
     public static boolean SaveMembers(members member) {
         try {

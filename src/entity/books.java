@@ -9,7 +9,7 @@ public class books implements Serializable {
     private int qty;
     private String isbn;
 
-    public books() {
+    public books(String string, String rstString, String author, String s, String isbn) {
     }
 
     public books(String id, String name, String author, int qty, String isbn) {
