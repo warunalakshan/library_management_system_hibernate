@@ -4,13 +4,17 @@ import com.jfoenix.controls.JFXTextField;
 import db.DBConnection;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import util.ShowMembersTM;
+import business.custom.membersBO;
 
 import java.sql.*;
+import java.util.List;
 
 public class ShowMembersController {
     public TableView <ShowMembersTM>tbl_AllMembers;
@@ -93,21 +97,17 @@ public class ShowMembersController {
         String address = txt_Address.getText();
         String contact = txt_Contact.getText();
         try {
-            Connection connection = DBConnection.getInstance().getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE members set name =?, address =?, nic =?, contact =? where member_id =?");
-//            PreparedStatement preparedStatement = DBConnection.getInstance().getConnection().prepareStatement();
-            preparedStatement.setObject(1,name);
-            preparedStatement.setObject(2,address);
-            preparedStatement.setObject(3,NIC);
-            preparedStatement.setObject(4,contact);
-            preparedStatement.setObject(5,id);
-            preparedStatement.executeUpdate();
-
-            new Alert(Alert.AlertType.INFORMATION, "Update Finish", ButtonType.OK).show();
+            ShowMembersTM selectMember = tbl_AllMembers.getSelectionModel().getSelectedItem();
+            boolean result = membersBO.updateCustomer(txt_Name.getText(), txt_Address.getText(), txt_NIC.getText(),
+                    txt_Contact.getText(), selectMember.getId());
+            if (!result){
+                new Alert(Alert.AlertType.ERROR, "Failed to update the member", ButtonType.OK).show();
+            }
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+        new Alert(Alert.AlertType.INFORMATION, "Update Finish", ButtonType.OK).show();
         loadMembers();
         txt_Name.clear();
         txt_Contact.clear();
@@ -120,15 +120,16 @@ public class ShowMembersController {
         String id = lbl_memberID.getText();
 
         ShowMembersTM selectMember = tbl_AllMembers.getSelectionModel().getSelectedItem();
+        boolean result = false;
         try{
-            Connection connection = DBConnection.getInstance().getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("Delete from members where member_id =?");
-            preparedStatement.setObject(1, id);
-            preparedStatement.executeUpdate();
+           result = membersBO.DeleteMember(selectMember.getId());
             loadMembers();
 
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+
+    }if (!result){
+            new Alert(Alert.AlertType.ERROR, "Failed to delete the customer", ButtonType.OK).show();
         }
         txt_Name.clear();
         txt_Contact.clear();
@@ -144,30 +145,15 @@ public class ShowMembersController {
 
 
     private void loadMembers(){
+        tbl_AllMembers.getItems().clear();
+        List<ShowMembersTM> allMembers = null;
         try{
-            Connection connection = DBConnection.getInstance().getConnection();
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("select * from members");
-            tbl_AllMembers.getItems().clear();
-            tbl_AllMembersShow.getItems().clear();
-            while (resultSet.next()){
-                String id = resultSet.getString(1);
-                String name = resultSet.getString(2);
-                String nic = resultSet.getString(3);
-                String address = resultSet.getString(4);
-                String contact = resultSet.getString(5);
-
-                ShowMembersTM membersTM = new ShowMembersTM(id, name, nic, address, contact);
-                tbl_AllMembers.getItems().add(membersTM);
-                tbl_AllMembersShow.getItems().add(membersTM);
-                tbl_AllMembersShow.refresh();
-                tbl_AllMembers.refresh();
-            }
-
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            allMembers = membersBO.getAllMembers();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
+        ObservableList<ShowMembersTM> member = FXCollections.observableArrayList(allMembers);
+        tbl_AllMembers.setItems(member);
 
     }
 

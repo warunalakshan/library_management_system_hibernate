@@ -1,4 +1,8 @@
-package dao;
+package dao.custom;
 
-public interface booksDAO extends superDAO{
+import dao.CrudDAO;
+import entity.books;
+
+public interface booksDAO extends CrudDAO<books, String> {
+    public String getLastBookID() throws Exception;
 }

@@ -1,6 +1,7 @@
 package controller;
 
-import business.BusinessLogic;
+
+import business.custom.booksBO;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import db.DBConnection;
@@ -26,7 +27,7 @@ public class AddBookController {
 
     public void btn_Add_new_OnAction(ActionEvent actionEvent) {
 
-        lbl_BookId.setText(BusinessLogic.getNewBookId());
+        lbl_BookId.setText(booksBO.getNewBookId());
 
     }
 
@@ -72,12 +73,19 @@ public class AddBookController {
         int qty = Integer.parseInt(txt_Quantity.getText());
         String isbn = txt_ISBN.getText();
 
-        BusinessLogic.SaveBook(lbl_BookId.getText(),
-                txt_Name.getText(),
-                txt_Author.getText(),
-                Integer.parseInt(txt_Quantity.getText()),
-                txt_ISBN.getText());
-
+        boolean result = false;
+        try {
+           result = booksBO.saveBook(lbl_BookId.getText(),
+                    txt_Name.getText(),
+                    txt_Author.getText(),
+                    Integer.parseInt(txt_Quantity.getText()),
+                    txt_ISBN.getText());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (!result){
+            new Alert(Alert.AlertType.ERROR, "Failed to save the book", ButtonType.OK).show();
+        }
         new Alert(Alert.AlertType.INFORMATION, "Successfully added..", ButtonType.OK).show();
         txt_Name.clear();
         txt_Author.clear();

@@ -1,8 +1,9 @@
 package controller;
 
-import business.BusinessLogic;
+
+import business.custom.booksBO;
 import com.jfoenix.controls.JFXTextField;
-import dao.custom.impl.booksDAOImpl;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -81,7 +82,12 @@ public class ShowBooksController {
         String isbn = txt_ISBN.getText();
 
         ShowBooksTM selectBook = tbl_AllBooks.getSelectionModel().getSelectedItem();
-        boolean result = BusinessLogic.UpdateBook(txt_Name.getText(), txt_Author.getText(), Integer.parseInt(txt_Quantity.getText()), txt_ISBN.getText(), selectBook.getId());
+        boolean result = false;
+try {
+    result = booksBO.updateBook(txt_Name.getText(), txt_Author.getText(), Integer.parseInt(txt_Quantity.getText()), txt_ISBN.getText(), selectBook.getId());
+    } catch (NumberFormatException e) {
+    e.printStackTrace();
+    }
         if (!result) {
             new Alert(Alert.AlertType.ERROR, "Failed to update the Book", ButtonType.OK).show();
         }
@@ -105,7 +111,12 @@ public class ShowBooksController {
 
         if (confirmtype.get() == ButtonType.YES) {
             ShowBooksTM selectBooks = tbl_AllBooks.getSelectionModel().getSelectedItem();
-            boolean result = BusinessLogic.DeleteBooks(selectBooks.getId());
+            boolean result = false;
+            try {
+                result = booksBO.deleteBook(selectBooks.getId());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             if (!result) {
                 new Alert(Alert.AlertType.ERROR, "Failed to delete the Book", ButtonType.OK).show();
             } else {
@@ -127,10 +138,14 @@ public class ShowBooksController {
         tbl_AllBooks.setItems(customers);
     }*/
 
-        tbl_AllBooks.getItems().clear();
-        List<ShowBooksTM> allCustomers = BusinessLogic.getAllCustomers();
-        ObservableList<ShowBooksTM> customers = FXCollections.observableArrayList(allCustomers);
-        tbl_AllBooks.setItems(customers);
+        ObservableList<ShowBooksTM> book = tbl_AllBooks.getItems();
+        book.clear();
+        try{
+            book = FXCollections.observableArrayList(booksBO.getAllBooks());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        tbl_AllBooks.setItems(book);
 
        /* booksDAOImpl booksDAO = new booksDAOImpl();
         List<books> customers = booksDAOImpl.findAllBooks();

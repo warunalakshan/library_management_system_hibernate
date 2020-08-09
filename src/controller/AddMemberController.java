@@ -1,20 +1,15 @@
 package controller;
 
-import business.BusinessLogic;
+
+import business.custom.membersBO;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
-import db.DBConnection;
-import javafx.application.Platform;
+
 import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 public class AddMemberController {
 
@@ -28,7 +23,12 @@ public class AddMemberController {
     public JFXButton btn_Save;
 
     public void btn_AddNewMember_OnAction(ActionEvent actionEvent) {
-        lbl_MemberId.setText(BusinessLogic.getNewMemberId());
+        try {
+            lbl_MemberId.setText(membersBO.getNewMemberId());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void btn_Save_OnAction(ActionEvent actionEvent) {
@@ -72,12 +72,15 @@ public class AddMemberController {
         String address = txt_Address.getText();
         String contact = txt_contact.getText();
 
-        BusinessLogic.SaveMembers(lbl_MemberId.getText(),
-                txt_name.getText(),
-                txt_Address.getText(),
-                txt_NIC.getText(),
-                txt_contact.getText());
-
+        try {
+            membersBO.SaveMembers(lbl_MemberId.getText(),
+                    txt_name.getText(),
+                    txt_Address.getText(),
+                    txt_NIC.getText(),
+                    txt_contact.getText());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         new Alert(Alert.AlertType.INFORMATION, "Successfully added...", ButtonType.OK).show();
         txt_name.clear();
