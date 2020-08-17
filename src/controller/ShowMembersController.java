@@ -1,7 +1,8 @@
 package controller;
 
+import bo.BOFactory;
+import bo.BOType;
 import com.jfoenix.controls.JFXTextField;
-import db.DBConnection;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -11,7 +12,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import util.ShowMembersTM;
-import business.custom.membersBO;
+import bo.custom.MembersBO;
 
 import java.sql.*;
 import java.util.List;
@@ -28,6 +29,8 @@ public class ShowMembersController {
     public Button btn_Delete;
     public Pane pane_Show;
     public TableView <ShowMembersTM>tbl_AllMembersShow;
+
+    MembersBO memberBO = BOFactory.getInstance().getBO(BOType.MEMBER);
 
     public void initialize(){
 
@@ -90,15 +93,15 @@ public class ShowMembersController {
             txt_Contact.requestFocus();
             return;
         }
-
-        String id = lbl_memberID.getText();
-        String name = txt_Name.getText();
-        String NIC = txt_NIC.getText();
-        String address = txt_Address.getText();
-        String contact = txt_Contact.getText();
+//
+//        String id = lbl_memberID.getText();
+//        String name = txt_Name.getText();
+//        String NIC = txt_NIC.getText();
+//        String address = txt_Address.getText();
+//        String contact = txt_Contact.getText();
         try {
             ShowMembersTM selectMember = tbl_AllMembers.getSelectionModel().getSelectedItem();
-            boolean result = membersBO.updateCustomer(txt_Name.getText(), txt_Address.getText(), txt_NIC.getText(),
+            boolean result = memberBO.updateMember(txt_Name.getText(), txt_Address.getText(), txt_NIC.getText(),
                     txt_Contact.getText(), selectMember.getId());
             if (!result){
                 new Alert(Alert.AlertType.ERROR, "Failed to update the member", ButtonType.OK).show();
@@ -106,6 +109,8 @@ public class ShowMembersController {
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         new Alert(Alert.AlertType.INFORMATION, "Update Finish", ButtonType.OK).show();
         loadMembers();
@@ -122,7 +127,7 @@ public class ShowMembersController {
         ShowMembersTM selectMember = tbl_AllMembers.getSelectionModel().getSelectedItem();
         boolean result = false;
         try{
-           result = membersBO.DeleteMember(selectMember.getId());
+           result = memberBO.DeleteMember(selectMember.getId());
             loadMembers();
 
         } catch (Exception e) {
@@ -148,7 +153,7 @@ public class ShowMembersController {
         tbl_AllMembers.getItems().clear();
         List<ShowMembersTM> allMembers = null;
         try{
-            allMembers = membersBO.getAllMembers();
+            allMembers = memberBO.getAllMembers();
         } catch (Exception e) {
             e.printStackTrace();
         }

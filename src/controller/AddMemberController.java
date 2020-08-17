@@ -1,7 +1,9 @@
 package controller;
 
 
-import business.custom.membersBO;
+import bo.BOFactory;
+import bo.BOType;
+import bo.custom.MembersBO;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 
@@ -22,9 +24,12 @@ public class AddMemberController {
     public Label lbl_MemberId;
     public JFXButton btn_Save;
 
+    MembersBO memberBO = BOFactory.getInstance().getBO(BOType.MEMBER);
+
     public void btn_AddNewMember_OnAction(ActionEvent actionEvent) {
+
         try {
-            lbl_MemberId.setText(membersBO.getNewMemberId());
+            lbl_MemberId.setText(memberBO.getNewMemberId());
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -65,15 +70,15 @@ public class AddMemberController {
             txt_contact.requestFocus();
             return;
         }
-
-        String id = lbl_MemberId.getText();
-        String name = txt_name.getText();
-        String NIC = txt_NIC.getText();
-        String address = txt_Address.getText();
-        String contact = txt_contact.getText();
+//
+//        String id = lbl_MemberId.getText();
+//        String name = txt_name.getText();
+//        String NIC = txt_NIC.getText();
+//        String address = txt_Address.getText();
+//        String contact = txt_contact.getText();
 
         try {
-            membersBO.SaveMembers(lbl_MemberId.getText(),
+            memberBO.SaveMembers(lbl_MemberId.getText(),
                     txt_name.getText(),
                     txt_Address.getText(),
                     txt_NIC.getText(),

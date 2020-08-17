@@ -1,7 +1,6 @@
 package dao;
 
 
-import dao.custom.membersDAO;
 import dao.custom.impl.*;
 
 public class DAOFactory {
@@ -15,21 +14,18 @@ public class DAOFactory {
         return (daoFactory == null)? daoFactory = new DAOFactory() : daoFactory;
     }
 
-    public membersDAO getMembersDAO(){
-        return new membersDAOImpl();
-        }
         public <T extends superDAO> T getDAO(DAOType daoType){
         switch (daoType){
             case MEMBER:
-                return (T) new membersDAOImpl();
+                return (T) new MembersDAOImpl();
             case BOOK:
-                return (T) new booksDAOImpl();
+                return (T) new BooksDAOImpl();
             case ISSUE:
-                return (T) new issueDAOImpl();
+                return (T) new IssueDAOImpl();
             case RETURN:
-                return (T) new returnsDAOImpl();
+                return (T) new ReturnsDAOImpl();
             case USERS:
-                return (T) new usersDAOImpl();
+                return (T) new UersDAOImpl();
             default:
                 return null;
         }

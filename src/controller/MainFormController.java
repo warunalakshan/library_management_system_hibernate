@@ -1,5 +1,10 @@
 package controller;
 
+import bo.BOFactory;
+import bo.BOType;
+import bo.custom.BooksBO;
+import bo.custom.IssueBO;
+import bo.custom.MembersBO;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
@@ -7,6 +12,8 @@ import com.jfoenix.controls.JFXTextField;
 import db.DBConnection;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -27,10 +34,10 @@ import util.ShowMembersTM;
 
 import java.io.IOException;
 import java.sql.*;
+
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.Calendar;
+import java.util.List;
 
 public class MainFormController {
     public AnchorPane root;
@@ -59,7 +66,12 @@ public class MainFormController {
     public Label lbl_fee;
     public Label lbl_feeDetail;
 
-    public void initialize(){
+    MembersBO membersBO= BOFactory.getInstance().getBO(BOType.MEMBER);
+    IssueBO issueBO=BOFactory.getInstance().getBO(BOType.ISSUE);
+    BooksBO booksBO = BOFactory.getInstance().getBO(BOType.BOOK);
+
+    public void initialize() throws Exception {
+
         img_ListDown.setVisible(true);
 
         tbl_Return.getColumns().get(0).setCellValueFactory(new PropertyValueFactory<>("issueID"));
@@ -72,7 +84,7 @@ public class MainFormController {
 
         loadBooks();
         loadMembers();
-        loadTable();
+//        loadTable();
 
 
 
@@ -179,34 +191,52 @@ public class MainFormController {
         stage.setResizable(false);
     }
 
+//    ----------------------------issue start--------------------------------
+
     public void btn_Cancel_Book_Issues_OnAction(ActionEvent actionEvent) {
         pane_Issue.setVisible(false);
         pane_img_DashBoard.setVisible(true);
     }
 
     public void btn_Issue_OnAction(ActionEvent actionEvent) {
-//
-//        String issue_id = lbl_IssueID.getText();
-        String member_id = String.valueOf(cmb_MemberID.getSelectionModel().getSelectedItem());
-        String book_id = String.valueOf(cmb_BookID.getSelectionModel().getSelectedItem());
-//        String date = dtp_Date.g
 
         try{
-            Connection connection = DBConnection.getInstance().getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("Insert into issue values (?,?,?,?)");
-            preparedStatement.setObject(1, lbl_IssueID.getText());
-            preparedStatement.setObject(2, member_id);
-            preparedStatement.setObject(3, book_id);
-            preparedStatement.setObject(4, dtp_Date.getValue());
-            preparedStatement.executeUpdate();
+            issueBO.issueBook(lbl_IssueID.getText(), cmb_BookID.getSelectionModel().getSelectedItem(),cmb_MemberID.getSelectionModel().getSelectedItem(),dtp_Date.getValue());
 
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
         new Alert(Alert.AlertType.INFORMATION, "Issue successfully", ButtonType.OK).show();
         pane_Issue.setVisible(false);
         pane_img_DashBoard.setVisible(true);
     }
+
+    private void loadBooks() throws Exception {
+        List<ShowBooksTM> allBooks = booksBO.getAllBooks();
+        ObservableList<ShowBooksTM> showBooksTMS = FXCollections.observableArrayList(allBooks);
+        cmb_BookID.setItems(showBooksTMS);
+    }
+
+    private void loadMembers() throws Exception {
+
+        List<ShowMembersTM> allMembers = membersBO.getAllMembers();
+        ObservableList<ShowMembersTM> showMembersTMS = FXCollections.observableArrayList(allMembers);
+        cmb_MemberID.setItems(showMembersTMS);
+
+    }
+
+    private void generateIssueID(){
+        try{
+            lbl_IssueID.setText(issueBO.getNewIssueId());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+//    -----------------------------return start--------------------------
 
     public void btn_Return_OnAction(ActionEvent actionEvent) {
         returnBook_deleteTable();
@@ -217,85 +247,12 @@ public class MainFormController {
         pane_img_DashBoard.setVisible(true);
     }
 
-    private void generateIssueID(){
-        try{
-            Connection connection = DBConnection.getInstance().getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("select issue_id from issue order by issue_id desc limit 1");
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (!resultSet.next()){
-                lbl_IssueID.setText("ISSUE/001");
-            }else{
-                String lastCode = resultSet.getString(1);
-                String substring = lastCode.substring(6,9);
-                int newCode = Integer.parseInt(substring) + 1;
-                if (newCode < 10){
-                    lbl_IssueID.setText("ISSUE/00" + newCode);
-                }else if (newCode < 100){
-                    lbl_IssueID.setText("ISSUE/0" + newCode);
-                }else {
-                    lbl_IssueID.setText("ISSUE/" + newCode);
-                }
-            }
-
-
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-    }
-    private void loadBooks() {
-        try {
-            Connection connection = DBConnection.getInstance().getConnection();
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("select * from books");
-            cmb_BookID.getItems().clear();
-            while (resultSet.next()){
-                String id = resultSet.getString(1);
-                String name = resultSet.getString(2);
-                String author = resultSet.getString(3);
-                int qty = resultSet.getInt(4);
-                String isbn = resultSet.getString(5);
-
-                ShowBooksTM showBooksTM = new ShowBooksTM(id, name, author, qty, isbn);
-                cmb_BookID.getItems().add(showBooksTM);
-            }
-
-
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-    }
-
-    private void loadMembers(){
-        try{
-            Connection connection = DBConnection.getInstance().getConnection();
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("select * from members");
-            cmb_MemberID.getItems().clear();
-            while (resultSet.next()){
-                String id = resultSet.getString(1);
-                String name = resultSet.getString(2);
-                String nic = resultSet.getString(3);
-                String address = resultSet.getString(4);
-                String contact = resultSet.getString(5);
-
-                ShowMembersTM membersTM = new ShowMembersTM(id, name, nic, address, contact);
-                cmb_MemberID.getItems().add(membersTM);
-
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
-    }
-
     private void loadTable(){
         try{
             Connection connection = DBConnection.getInstance().getConnection();
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("select i.issue_id, i.member_id, i.book_id, b.book_name, i.issue_date from issue i\n" +
-                    "INNER join books b on i.book_id = b.book_id ");
+            ResultSet resultSet = statement.executeQuery("select i.issue_id, i.member_id, i.book_id, b.book_name, i.issue_date from Issue i\n" +
+                    "INNER join Books b on i.book_id = b.book_id ");
             tbl_Return.getItems().clear();
             cmb_IssueID_Return.getItems().clear();
             while (resultSet.next()){

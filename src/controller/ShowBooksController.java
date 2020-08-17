@@ -1,7 +1,9 @@
 package controller;
 
 
-import business.custom.booksBO;
+import bo.BOFactory;
+import bo.BOType;
+import bo.custom.BooksBO;
 import com.jfoenix.controls.JFXTextField;
 
 import javafx.beans.value.ChangeListener;
@@ -13,7 +15,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import util.ShowBooksTM;
 
-import java.util.List;
 import java.util.Optional;
 
 public class ShowBooksController {
@@ -25,6 +26,8 @@ public class ShowBooksController {
     public Label lbl_BookID;
     public Button btn_Update;
     public Button btn_Delete;
+
+    BooksBO bookBO = BOFactory.getInstance().getBO(BOType.BOOK);
 
     public void initialize() {
         tbl_AllBooks.getColumns().get(0).setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -75,16 +78,16 @@ public class ShowBooksController {
             return;
         }
 
-        String id = lbl_BookID.getText();
-        String name = txt_Name.getText();
-        String author = txt_Author.getText();
-        int qty = Integer.parseInt(txt_Quantity.getText());
-        String isbn = txt_ISBN.getText();
+//        String id = lbl_BookID.getText();
+//        String name = txt_Name.getText();
+//        String author = txt_Author.getText();
+//        int qty = Integer.parseInt(txt_Quantity.getText());
+//        String isbn = txt_ISBN.getText();
 
         ShowBooksTM selectBook = tbl_AllBooks.getSelectionModel().getSelectedItem();
         boolean result = false;
 try {
-    result = booksBO.updateBook(txt_Name.getText(), txt_Author.getText(), Integer.parseInt(txt_Quantity.getText()), txt_ISBN.getText(), selectBook.getId());
+    result = bookBO.updateBook(txt_Name.getText(), txt_Author.getText(), Integer.parseInt(txt_Quantity.getText()), txt_ISBN.getText(), selectBook.getId());
     } catch (NumberFormatException e) {
     e.printStackTrace();
     }
@@ -113,7 +116,7 @@ try {
             ShowBooksTM selectBooks = tbl_AllBooks.getSelectionModel().getSelectedItem();
             boolean result = false;
             try {
-                result = booksBO.deleteBook(selectBooks.getId());
+                result = bookBO.deleteBook(selectBooks.getId());
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -132,26 +135,16 @@ try {
 
     private void loadBooks() {
 
-    /*    tbl_AllBooks.getItems().clear();
-        List<ShowBooksTM> allBooks = BusinessLogic.getAllBooks();
-        ObservableList<ShowBooksTM> customers = FXCollections.observableArrayList(allBooks);
-        tbl_AllBooks.setItems(customers);
-    }*/
 
         ObservableList<ShowBooksTM> book = tbl_AllBooks.getItems();
         book.clear();
         try{
-            book = FXCollections.observableArrayList(booksBO.getAllBooks());
+            book = FXCollections.observableArrayList(bookBO.getAllBooks());
         } catch (Exception e) {
             e.printStackTrace();
         }
         tbl_AllBooks.setItems(book);
 
-       /* booksDAOImpl booksDAO = new booksDAOImpl();
-        List<books> customers = booksDAOImpl.findAllBooks();
-        for (books customer : customers) {
-            System.out.println(customer);
-        }*/
     }
 }
 

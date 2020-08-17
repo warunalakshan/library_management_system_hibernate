@@ -1,19 +1,16 @@
 package controller;
 
 
-import business.custom.booksBO;
+import bo.BOFactory;
+import bo.BOType;
+import bo.custom.BooksBO;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
-import db.DBConnection;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 
 public class AddBookController {
     public AnchorPane root;
@@ -25,10 +22,14 @@ public class AddBookController {
     public Label lbl_BookId;
     public JFXButton btn_Save;
 
+    BooksBO bookBO = BOFactory.getInstance().getBO(BOType.BOOK);
     public void btn_Add_new_OnAction(ActionEvent actionEvent) {
 
-        lbl_BookId.setText(booksBO.getNewBookId());
-
+        try {
+            lbl_BookId.setText(bookBO.getNewBookId());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void txt_ISBN_OnAction(ActionEvent actionEvent) {
@@ -75,7 +76,7 @@ public class AddBookController {
 
         boolean result = false;
         try {
-           result = booksBO.saveBook(lbl_BookId.getText(),
+           result = bookBO.saveBook(lbl_BookId.getText(),
                     txt_Name.getText(),
                     txt_Author.getText(),
                     Integer.parseInt(txt_Quantity.getText()),
