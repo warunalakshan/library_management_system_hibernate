@@ -159,6 +159,7 @@ public class ShowMembersController {
         }
         ObservableList<ShowMembersTM> member = FXCollections.observableArrayList(allMembers);
         tbl_AllMembers.setItems(member);
+        tbl_AllMembersShow.setItems(member);
 
     }
 

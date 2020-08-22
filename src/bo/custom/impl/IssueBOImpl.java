@@ -12,11 +12,13 @@ import entity.Members;
 import util.ShowBooksTM;
 import util.ShowMembersTM;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class IssueBOImpl implements IssueBO {
+    IssueDAO issueDAO = DAOFactory.getInstance().getDAO(DAOType.ISSUE);
+
     @Override
     public String getNewIssueId() throws Exception {
         IssueDAO issueDao = DAOFactory.getInstance().getDAO(DAOType.ISSUE);
@@ -39,10 +41,8 @@ public class IssueBOImpl implements IssueBO {
     }
 
     @Override
-    public boolean issueBook(String id, Object member_id, Object book_id, LocalDate issueDate) throws Exception {
-
-        IssueDAO issueDao = DAOFactory.getInstance().getDAO(DAOType.ISSUE);
-        return issueDao.add(new Issue(id, member_id, book_id, issueDate));
+    public boolean issueBook(String id, String member_id, String book_id, Date issueDate) throws Exception {
+        return issueDAO.add(new Issue(id,member_id, book_id, issueDate));
     }
 
     @Override
@@ -70,4 +70,5 @@ public class IssueBOImpl implements IssueBO {
         }
         return membersTMS;
     }
+
 }

@@ -3,6 +3,7 @@ package bo.custom.impl;
 import bo.custom.MembersBO;
 import dao.DAOFactory;
 import dao.DAOType;
+import dao.custom.BooksDAO;
 import dao.custom.MembersDAO;
 import entity.Members;
 import util.ShowMembersTM;
@@ -11,15 +12,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MembersBOImpl implements MembersBO {
+
     @Override
     public String getNewMemberId() throws Exception {
 
-        MembersDAO membersDao = DAOFactory.getInstance().getDAO(DAOType.MEMBER);
-        String lastmemberID = membersDao.getLastCustomerID();
-        if (lastmemberID == null) {
+
+        MembersDAO membersDAO = DAOFactory.getInstance().getDAO(DAOType.MEMBER);
+        String lastMemberId = membersDAO.getLastMemberID();
+        if (lastMemberId == null) {
             return "M001";
         } else {
-            int maxId = Integer.parseInt(lastmemberID.replace("M", ""));
+            int maxId = Integer.parseInt(lastMemberId.replace("M", ""));
             maxId = maxId + 1;
             String id = "";
             if (maxId < 10) {
@@ -32,6 +35,26 @@ public class MembersBOImpl implements MembersBO {
             return id;
         }
     }
+
+
+//        MembersDAO membersDao = DAOFactory.getInstance().getDAO(DAOType.MEMBER);
+//        String lastmemberID = membersDao.getLastCustomerID();
+//        if (lastmemberID == null) {
+//            return "M001";
+//        } else {
+//            int maxId = Integer.parseInt(lastmemberID.replace("M", ""));
+//            maxId = maxId + 1;
+//            String id = "";
+//            if (maxId < 10) {
+//                id = "M00" + maxId;
+//            } else if (maxId < 100) {
+//                id = "M0" + maxId;
+//            } else {
+//                id = "M" + maxId;
+//            }
+//            return id;
+//        }
+
 
     @Override
     public List<ShowMembersTM> getAllMembers() throws Exception {

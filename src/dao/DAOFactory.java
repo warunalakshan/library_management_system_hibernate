@@ -14,7 +14,7 @@ public class DAOFactory {
         return (daoFactory == null)? daoFactory = new DAOFactory() : daoFactory;
     }
 
-        public <T extends superDAO> T getDAO(DAOType daoType){
+        public <T extends SuperDAO> T getDAO(DAOType daoType){
         switch (daoType){
             case MEMBER:
                 return (T) new MembersDAOImpl();
@@ -26,6 +26,8 @@ public class DAOFactory {
                 return (T) new ReturnsDAOImpl();
             case USERS:
                 return (T) new UersDAOImpl();
+            case QUERY:
+                return (T) new QueryDAOImpl();
             default:
                 return null;
         }

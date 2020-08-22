@@ -27,10 +27,8 @@ public class AddMemberController {
     MembersBO memberBO = BOFactory.getInstance().getBO(BOType.MEMBER);
 
     public void btn_AddNewMember_OnAction(ActionEvent actionEvent) {
-
         try {
             lbl_MemberId.setText(memberBO.getNewMemberId());
-
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -9,7 +9,7 @@ public class Books implements SuperEntity {
     private int qty;
     private String isbn;
 
-    public Books(String string, String rstString, String author, String s, String isbn) {
+    public Books() {
     }
 
     public Books(String id, String name, String author, int qty, String isbn) {

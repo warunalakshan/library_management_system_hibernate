@@ -5,13 +5,13 @@ import bo.BOType;
 import bo.custom.BooksBO;
 import bo.custom.IssueBO;
 import bo.custom.MembersBO;
+import bo.custom.ReturnsBO;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
-import db.DBConnection;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import entity.Issue;
+import entity.Returns;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -28,15 +28,13 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import util.IssueDetailsTM;
 import util.ReturnDetailsTM;
 import util.ShowBooksTM;
 import util.ShowMembersTM;
 
 import java.io.IOException;
-import java.sql.*;
-
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
+import java.sql.ResultSet;
 import java.util.List;
 
 public class MainFormController {
@@ -58,9 +56,8 @@ public class MainFormController {
     public JFXDatePicker dtp_Date;
     public JFXButton btn_Issue;
     public JFXButton btn_Cancel_returnBook;
-    public Label lbl_returnDate;
     public TableView <ReturnDetailsTM>tbl_Return;
-    public JFXComboBox cmb_IssueID_Return;
+    public JFXComboBox<Returns> cmb_IssueID_Return;
     public JFXButton btn_return;
     public JFXTextField txt_Fee;
     public Label lbl_fee;
@@ -69,6 +66,7 @@ public class MainFormController {
     MembersBO membersBO= BOFactory.getInstance().getBO(BOType.MEMBER);
     IssueBO issueBO=BOFactory.getInstance().getBO(BOType.ISSUE);
     BooksBO booksBO = BOFactory.getInstance().getBO(BOType.BOOK);
+    ReturnsBO returnsBO = BOFactory.getInstance().getBO(BOType.RETURN);
 
     public void initialize() throws Exception {
 
@@ -84,33 +82,32 @@ public class MainFormController {
 
         loadBooks();
         loadMembers();
-//        loadTable();
-
-
-
-        cmb_IssueID_Return.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<ReturnDetailsTM>() {
-            @Override
-            public void changed(ObservableValue<? extends ReturnDetailsTM> observable, ReturnDetailsTM oldValue, ReturnDetailsTM newValue) {
-                if (newValue == null){
-
-                }else {
-                    if (newValue.getLateDays() > 14){
-                        lbl_feeDetail.setVisible(true);
-                        lbl_feeDetail.setText("Member have to pay a fine Rs :");
-                        lbl_fee.setText(" 50.00");
-                        lbl_fee.setStyle("-fx-text-fill: #990000");
-                        lbl_fee.setVisible(true);
-                    }else{
-                        lbl_feeDetail.setText("You do not have to pay a fine");
-                        lbl_fee.setText("00.00");
-                        lbl_fee.setVisible(false);
-
-                    }
-                }
-            }
-        });
+//        loadCombo();
     }
+//    ObservableList<String> items = cmbPackageCellID.getItems();
+//        try {
+//        ResultSet notReservedCells = packageCellsBO.getNotReservedCells();
+//        while (notReservedCells.next()){
+//            items.add(notReservedCells.getString(1));
+//        }
+//    } catch (Exception e) {
+//        e.printStackTrace();
+//    }
 
+    void loadCombo(){
+//        ObservableList<String > items = cmb_IssueID_Return.getItems();
+//        items.clear();
+//        try {
+//            ResultSet issues = returnsBO.getIssuesID();
+//
+//           while (issues.next()){
+//               items.add(issues.getString(1));
+//           }
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+    }
 
     public void img_List(MouseEvent mouseEvent) {
         Pane_1_DashBoard.setVisible(true);
@@ -200,12 +197,6 @@ public class MainFormController {
 
     public void btn_Issue_OnAction(ActionEvent actionEvent) {
 
-        try{
-            issueBO.issueBook(lbl_IssueID.getText(), cmb_BookID.getSelectionModel().getSelectedItem(),cmb_MemberID.getSelectionModel().getSelectedItem(),dtp_Date.getValue());
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
         new Alert(Alert.AlertType.INFORMATION, "Issue successfully", ButtonType.OK).show();
         pane_Issue.setVisible(false);
@@ -223,7 +214,6 @@ public class MainFormController {
         List<ShowMembersTM> allMembers = membersBO.getAllMembers();
         ObservableList<ShowMembersTM> showMembersTMS = FXCollections.observableArrayList(allMembers);
         cmb_MemberID.setItems(showMembersTMS);
-
     }
 
     private void generateIssueID(){
@@ -235,98 +225,19 @@ public class MainFormController {
         }
     }
 
-
 //    -----------------------------return start--------------------------
 
     public void btn_Return_OnAction(ActionEvent actionEvent) {
-        returnBook_deleteTable();
-        returnBook_insertTable();
     }
     public void btn_Cancel_ReturnBooks_OnAction(ActionEvent actionEvent) {
         pane_return.setVisible(false);
         pane_img_DashBoard.setVisible(true);
     }
 
-    private void loadTable(){
-        try{
-            Connection connection = DBConnection.getInstance().getConnection();
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("select i.issue_id, i.member_id, i.book_id, b.book_name, i.issue_date from Issue i\n" +
-                    "INNER join Books b on i.book_id = b.book_id ");
-            tbl_Return.getItems().clear();
-            cmb_IssueID_Return.getItems().clear();
-            while (resultSet.next()){
-                String id = resultSet.getString(1);
-                String Mid = resultSet.getString(2);
-                String Bid = resultSet.getString(3);
-                String Bname = resultSet.getString(4);
-                Date date = resultSet.getDate(5);
-
-                //Difference between Days
-                LocalDate Today = LocalDate.now();
-                LocalDate next2Week = Today.plus(2, ChronoUnit.WEEKS);
-//                lbl_returnDate.setText(String.valueOf(next2Week));
-
-                LocalDate today = LocalDate.now();
-                long diffInDays = ChronoUnit.DAYS.between(date.toLocalDate(), today);
-
-                ReturnDetailsTM returnDetailsTM = new ReturnDetailsTM(id, Mid, Bid, Bname, date, next2Week, diffInDays);
-                tbl_Return.getItems().add(returnDetailsTM);
-                cmb_IssueID_Return.getItems().add(returnDetailsTM);
-                tbl_Return.refresh();
-            }
-
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
+    private void issueIdLoadCmd() throws Exception {
+        List<IssueDetailsTM> issuesID = (List<IssueDetailsTM>) returnsBO.getIssuesID();
+        ObservableList<IssueDetailsTM> issueDetailsTMS = FXCollections.observableArrayList(issuesID);
+        cmb_IssueID_Return.setItems(cmb_IssueID_Return.getItems());
     }
-
-    private void returnBook_deleteTable(){
-        String id = String.valueOf(cmb_IssueID_Return.getSelectionModel().getSelectedItem());
-
-        try{
-            Connection connection = DBConnection.getInstance().getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("DELETE from issue where issue_id =?");
-            preparedStatement.setObject(1, id);
-            preparedStatement.executeUpdate();
-            loadTable();
-
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        cmb_IssueID_Return.getSelectionModel().clearSelection();
-    }
-
-    private void returnBook_insertTable(){
-
-        String id = String.valueOf(cmb_IssueID_Return.getSelectionModel().getSelectedItem());
-        LocalDate Today = LocalDate.now();
-        Double fee = Double.valueOf(lbl_fee.getText());
-
-        try{
-            Connection connection = DBConnection.getInstance().getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("Insert into returns values(?,?,?)");
-            preparedStatement.setObject(1,id);
-            preparedStatement.setObject(2,Today);
-            preparedStatement.setObject(3, fee);
-            preparedStatement.executeUpdate();
-            new Alert(Alert.AlertType.INFORMATION, "Lk").show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-
-
-    /*private void calculateQty(ShowBooksTM showBooksTM) {
-        for (ReturnDetailsTM orderDetails : tbl_Return.getItems()) {
-            if (orderDetails.getBookID().equals(ShowBooksTM.getId())) {
-                int qty = Integer.parseInt(ShowBooksTM.getQty()) - orderDetails.getQuantity();
-                txtQOH.setText(qty + "");
-                break;
-            }
-        }
-    }*/
-
 }
 

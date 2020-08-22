@@ -1,22 +1,21 @@
-package entity;
+package util;
 
 import java.util.Date;
 
+public class IssueDetailsTM {
+private String issueId;
+private String memberId;
+private String bookId;
+private Date date;
 
-public class Issue implements SuperEntity{
-    private String issueId;
-    private String memberId;
-    private String bookId;
-    private Date issueDate;
-
-    public Issue() {
+    public IssueDetailsTM() {
     }
 
-    public Issue(String issueId, String memberId, String bookId, Date issueDate) {
+    public IssueDetailsTM(String issueId, String memberId, String bookId, Date date) {
         this.issueId = issueId;
         this.memberId = memberId;
         this.bookId = bookId;
-        this.issueDate = issueDate;
+        this.date = date;
     }
 
     public String getIssueId() {
@@ -43,21 +42,21 @@ public class Issue implements SuperEntity{
         this.bookId = bookId;
     }
 
-    public Date getIssueDate() {
-        return issueDate;
+    public Date getDate() {
+        return date;
     }
 
-    public void setIssueDate(Date issueDate) {
-        this.issueDate = issueDate;
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     @Override
     public String toString() {
-        return "Issue{" +
+        return "IssueDetailsTM{" +
                 "issueId='" + issueId + '\'' +
                 ", memberId='" + memberId + '\'' +
                 ", bookId='" + bookId + '\'' +
-                ", issueDate=" + issueDate +
+                ", date=" + date +
                 '}';
     }
 }
