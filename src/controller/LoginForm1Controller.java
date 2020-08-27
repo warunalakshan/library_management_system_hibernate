@@ -1,5 +1,8 @@
 package controller;
 
+import bo.BOFactory;
+import bo.BOType;
+import bo.custom.UsersBO;
 import db.DBConnection;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -29,10 +32,21 @@ public class LoginForm1Controller {
     public AnchorPane root;
     public TextField txt_userName_Login;
     public TextField txt_Password_Login;
+    public Label lbl_UserId;
 
+    UsersBO usersBO = BOFactory.getInstance().getBO(BOType.USERS);
 
     public void initialize() {
 
+    }
+
+    private void userIdGenerate(){
+        try{
+            lbl_UserId.setText(usersBO.getNewUserId());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void btn_Submit_OnAction(ActionEvent actionEvent) throws IOException {
@@ -51,6 +65,7 @@ public class LoginForm1Controller {
 
     public void btn_SignUp_OnAction(ActionEvent actionEvent) throws SQLException {
         signUp();
+        userIdGenerate();
     }
 
 
@@ -79,9 +94,10 @@ public class LoginForm1Controller {
 
         String userName = txt_userName_Login.getText();
         String password = txt_Password_Login.getText();
+        String id = lbl_UserId.getText();
 
         try{
-            PreparedStatement preparedStatement = DBConnection.getInstance().getConnection().prepareStatement("select * from users where username=? and password=?");
+            PreparedStatement preparedStatement = DBConnection.getInstance().getConnection().prepareStatement("select * from Users where username=? and password=?");
             preparedStatement.setObject(1,userName);
             preparedStatement.setObject(2,password);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -122,24 +138,26 @@ public class LoginForm1Controller {
             return;
         }
 
-        String userName = txt_UserName_SignUp.getText();
-        String password = txt_Password_SignUp.getText();
-//        String id = txt_ID_SignUp.getText();
+        String userName = txt_userName_Login.getText();
+        String password = txt_Password_Login.getText();
+        String id = lbl_UserId.getText();
 
+        boolean result = false;
         try {
-            Connection connection = DBConnection.getInstance().getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("insert into users values (?,?) ");
-//            preparedStatement.setObject(1, id);
-            preparedStatement.setObject(1, userName);
-            preparedStatement.setObject(2, password);
-            preparedStatement.executeUpdate();
-
+            result = usersBO.saveUsers(lbl_UserId.getText(), txt_UserName_SignUp.getText(), txt_Password_SignUp.getText());
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+        if (!result) {
+            new Alert(Alert.AlertType.INFORMATION, "Registration is Failed...!", ButtonType.OK).showAndWait();
+        }else {
             new Alert(Alert.AlertType.INFORMATION, "Registration is successfully...!", ButtonType.OK).showAndWait();
             pane_SignUp.setVisible(false);
             pane_SignIn.setVisible(true);
-
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
         }
+    }
+
+    public void btn_ADD(ActionEvent actionEvent) {
+        userIdGenerate();
     }
 }

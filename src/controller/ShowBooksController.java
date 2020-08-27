@@ -87,20 +87,20 @@ public class ShowBooksController {
         ShowBooksTM selectBook = tbl_AllBooks.getSelectionModel().getSelectedItem();
         boolean result = false;
 try {
-    result = bookBO.updateBook(txt_Name.getText(), txt_Author.getText(), Integer.parseInt(txt_Quantity.getText()), txt_ISBN.getText(), selectBook.getId());
-    } catch (NumberFormatException e) {
+    result = bookBO.updateBook(txt_Name.getText(), txt_Author.getText(), Integer.parseInt(txt_Quantity.getText()), txt_ISBN.getText(),selectBook.getId());
+    } catch (Exception e) {
     e.printStackTrace();
-    }
+}
         if (!result) {
             new Alert(Alert.AlertType.ERROR, "Failed to update the Book", ButtonType.OK).show();
+        }else {
+            new Alert(Alert.AlertType.INFORMATION, "Update Successfully", ButtonType.OK).show();
+            loadBooks();
+            txt_Name.clear();
+            txt_Author.clear();
+            txt_Quantity.clear();
+            txt_ISBN.clear();
         }
-
-        new Alert(Alert.AlertType.INFORMATION, "Update Successfully", ButtonType.OK).show();
-        loadBooks();
-        txt_Name.clear();
-        txt_Author.clear();
-        txt_Quantity.clear();
-        txt_ISBN.clear();
     }
 
 

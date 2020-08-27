@@ -25,7 +25,7 @@ public class DAOFactory {
             case RETURN:
                 return (T) new ReturnsDAOImpl();
             case USERS:
-                return (T) new UersDAOImpl();
+                return (T) new UsersDAOImpl();
             case QUERY:
                 return (T) new QueryDAOImpl();
             default:

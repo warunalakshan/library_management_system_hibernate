@@ -70,24 +70,19 @@
                   <Font name="System Bold" size="26.0" />
                </font>
             </Label>
-            <TextField fx:id="txt_ID_SignUp" layoutX="33.0" layoutY="81.0" prefHeight="20.0" prefWidth="481.0" promptText="ID">
-               <font>
-                  <Font size="17.0" />
-               </font>
-            </TextField>
-            <Button fx:id="btn_SignUp" layoutX="34.0" layoutY="267.0" mnemonicParsing="false" onAction="#btn_SignUp_OnAction" prefHeight="49.0" prefWidth="108.0" style="-fx-background-color: #00aaff;" text="SIGN UP" textFill="WHITE">
+            <Button fx:id="btn_SignUp" layoutX="34.0" layoutY="284.0" mnemonicParsing="false" onAction="#btn_SignUp_OnAction" prefHeight="32.0" prefWidth="108.0" style="-fx-background-color: #00aaff;" text="SIGN UP" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
             </Button>
-            <TextField fx:id="txt_Password_SignUp" layoutX="34.0" layoutY="167.0" onAction="#txt_password_SignUp_OnAction" prefHeight="13.0" prefWidth="481.0" promptText="Password">
+            <TextField fx:id="txt_Password_SignUp" layoutX="34.0" layoutY="162.0" onAction="#txt_password_SignUp_OnAction" prefHeight="13.0" prefWidth="481.0" promptText="Password">
                <font>
-                  <Font size="17.0" />
+                  <Font size="16.0" />
                </font>
             </TextField>
-            <TextField fx:id="txt_UserName_SignUp" layoutX="34.0" layoutY="124.0" prefHeight="19.0" prefWidth="481.0" promptText="User Name">
+            <TextField fx:id="txt_UserName_SignUp" layoutX="34.0" layoutY="113.0" prefHeight="19.0" prefWidth="481.0" promptText="User Name">
                <font>
-                  <Font size="17.0" />
+                  <Font size="16.0" />
                </font>
             </TextField>
             <ImageView fitHeight="43.0" fitWidth="74.0" layoutX="13.0" layoutY="6.0" onMouseClicked="#img_Back_OnAction" pickOnBounds="true" preserveRatio="true">
@@ -97,9 +92,15 @@
             </ImageView>
             <TextField layoutX="34.0" layoutY="211.0" prefHeight="13.0" prefWidth="481.0" promptText="NIC">
                <font>
-                  <Font size="17.0" />
+                  <Font size="16.0" />
                </font>
             </TextField>
+            <Label fx:id="lbl_UserId" layoutX="460.0" layoutY="63.0" prefHeight="31.0" prefWidth="99.0" text="Label" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="19.0" />
+               </font>
+            </Label>
+            <Button layoutX="433.0" layoutY="36.0" mnemonicParsing="false" onAction="#btn_ADD" style="-fx-background-color: #ff6666;" text="ADD NEW USER" />
          </children>
       </Pane>
    </children>

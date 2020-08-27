@@ -11,9 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BooksBOImpl implements BooksBO {
+    BooksDAO booksDao = DAOFactory.getInstance().getDAO(DAOType.BOOK);
     @Override
     public String getNewBookId() throws Exception {
-        BooksDAO booksDao = DAOFactory.getInstance().getDAO(DAOType.BOOK);
+
         String lastBookID = booksDao.getLastBookID();
         if (lastBookID == null) {
             return "B001";
@@ -58,13 +59,8 @@ public class BooksBOImpl implements BooksBO {
     }
 
     @Override
-    public boolean updateBook(String name, String author, int qty, String isbn, String id) {
-        try{
-           BooksDAO bookDao = DAOFactory.getInstance().getDAO(DAOType.BOOK);
-           return bookDao.update(new Books(id, name, author, qty, isbn));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
+    public boolean updateBook(String name, String author, int qty, String isbn, String id) throws Exception {
+            BooksDAO booksDAO = DAOFactory.getInstance().getDAO(DAOType.BOOK);
+            return booksDAO.update(new Books(id, name, author, qty, isbn));
     }
 }

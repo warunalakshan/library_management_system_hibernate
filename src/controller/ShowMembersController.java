@@ -11,6 +11,7 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
+import util.ShowBooksTM;
 import util.ShowMembersTM;
 import bo.custom.MembersBO;
 
@@ -52,18 +53,19 @@ public class ShowMembersController {
             public void changed(ObservableValue<? extends ShowMembersTM> observable, ShowMembersTM oldValue, ShowMembersTM newValue) {
                 ShowMembersTM selectMember = tbl_AllMembers.getSelectionModel().getSelectedItem();
                 if (newValue == null){
-                    lbl_memberID.setVisible(false);
+//                    lbl_memberID.setVisible(false);
                 }else {
                     lbl_memberID.setText(selectMember.getId());
-                    lbl_memberID.setVisible(true);
                     txt_Name.setText(selectMember.getName());
                     txt_Address.setText(selectMember.getAddress());
                     txt_NIC.setText(selectMember.getNic());
                     txt_Contact.setText(selectMember.getContact());
-                    txt_Name.setVisible(true);
-                    txt_Address.setVisible(true);
-                    txt_Contact.setVisible(true);
-                    txt_NIC.setVisible(true);
+
+//                    lbl_memberID.setVisible(true);
+//                    txt_Name.setVisible(true);
+//                    txt_Address.setVisible(true);
+//                    txt_Contact.setVisible(true);
+//                    txt_NIC.setVisible(true);
                 }
             }
         });
@@ -99,25 +101,26 @@ public class ShowMembersController {
 //        String NIC = txt_NIC.getText();
 //        String address = txt_Address.getText();
 //        String contact = txt_Contact.getText();
-        try {
-            ShowMembersTM selectMember = tbl_AllMembers.getSelectionModel().getSelectedItem();
-            boolean result = memberBO.updateMember(txt_Name.getText(), txt_Address.getText(), txt_NIC.getText(),
-                    txt_Contact.getText(), selectMember.getId());
-            if (!result){
-                new Alert(Alert.AlertType.ERROR, "Failed to update the member", ButtonType.OK).show();
-            }
 
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+
+        ShowMembersTM selectMember = tbl_AllMembers.getSelectionModel().getSelectedItem();
+        boolean result = false;
+        try {
+            result = memberBO.updateMember(txt_Name.getText(), txt_Address.getText(), txt_NIC.getText(),
+                    txt_Contact.getText(), selectMember.getId());
         } catch (Exception e) {
             e.printStackTrace();
         }
-        new Alert(Alert.AlertType.INFORMATION, "Update Finish", ButtonType.OK).show();
-        loadMembers();
-        txt_Name.clear();
-        txt_Contact.clear();
-        txt_Address.clear();
-        txt_NIC.clear();
+        if (!result){
+                new Alert(Alert.AlertType.ERROR, "Failed to update the member", ButtonType.OK).show();
+            }else {
+                new Alert(Alert.AlertType.INFORMATION, "Update Finish", ButtonType.OK).show();
+                loadMembers();
+                txt_Name.clear();
+                txt_Contact.clear();
+                txt_Address.clear();
+                txt_NIC.clear();
+            }
     }
 
     public void btn_Delete_OnAction(ActionEvent actionEvent) {

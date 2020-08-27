@@ -57,7 +57,9 @@ public class BooksDAOImpl implements BooksDAO {
 
  @Override
  public boolean update(Books entity) throws Exception {
-  return CrudUtil.execute("update Books set name=?, author=?, quantity=?, isbn=? where book_id =?", entity.getName(), entity.getAuthor(), entity.getQty(), entity.getIsbn(), entity.getId());
+  return CrudUtil.execute("update Books set book_name=?, author=?, quantity=?, isbn=?" +
+                  "  where book_id =?", entity.getName(),
+          entity.getAuthor(), entity.getQty(), entity.getIsbn(),entity.getId() );
  }
 
  @Override

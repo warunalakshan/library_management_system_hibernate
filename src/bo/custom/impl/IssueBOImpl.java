@@ -12,17 +12,16 @@ import entity.Members;
 import util.ShowBooksTM;
 import util.ShowMembersTM;
 
+import java.sql.Date;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class IssueBOImpl implements IssueBO {
     IssueDAO issueDAO = DAOFactory.getInstance().getDAO(DAOType.ISSUE);
-
     @Override
     public String getNewIssueId() throws Exception {
-        IssueDAO issueDao = DAOFactory.getInstance().getDAO(DAOType.ISSUE);
-        String lastIssueId = issueDao.getLastIssueID();
+
+        String lastIssueId = issueDAO.getLastIssueID();
         if (lastIssueId == null){
             return "ISSUE/001";
         }else{
@@ -69,6 +68,17 @@ public class IssueBOImpl implements IssueBO {
                     member.getAddress(), member.getNic(), member.getContact()));
         }
         return membersTMS;
+    }
+
+    @Override
+    public List<Issue> getAllIssues() throws Exception {
+        IssueDAO issueDAO = DAOFactory.getInstance().getDAO(DAOType.ISSUE);
+        List<Issue> all = issueDAO.findAll();
+        List<Issue> issues = new ArrayList<>();
+        for (Issue issue : all) {
+            issues.add(issue);
+        }
+        return issues;
     }
 
 }

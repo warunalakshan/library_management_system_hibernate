@@ -14,7 +14,7 @@ public class IssueDAOImpl implements IssueDAO {
     @Override
     public String getLastIssueID() throws Exception {
 
-        ResultSet resultSet = CrudUtil.execute("select * from Issue order by issue_id limit 1");
+        ResultSet resultSet = CrudUtil.execute("select * from Issue order by issue_id desc limit 1");
         if (resultSet.next()) {
             return resultSet.getString(1);
         } else {
@@ -34,7 +34,7 @@ public class IssueDAOImpl implements IssueDAO {
                     resultSet.getDate(4)));
         }
 
-        return null;
+        return membersList;
     }
 
     @Override
@@ -44,6 +44,7 @@ public class IssueDAOImpl implements IssueDAO {
 
     @Override
     public boolean add(Issue entity) throws Exception {
+        System.out.println(entity.getBookId());
         return CrudUtil.execute("insert into Issue  values(?,?,?,?)", entity.getIssueId(),
                 entity.getMemberId(), entity.getBookId(), entity.getIssueDate());
     }

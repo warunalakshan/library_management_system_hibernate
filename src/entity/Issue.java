@@ -3,16 +3,16 @@ package entity;
 import java.util.Date;
 
 
-public class Issue implements SuperEntity{
+public class Issue implements SuperEntity {
     private String issueId;
     private String memberId;
     private String bookId;
-    private Date issueDate;
+    private java.sql.Date issueDate;
 
     public Issue() {
     }
 
-    public Issue(String issueId, String memberId, String bookId, Date issueDate) {
+    public Issue(String issueId, String memberId, String bookId, java.sql.Date issueDate) {
         this.issueId = issueId;
         this.memberId = memberId;
         this.bookId = bookId;
@@ -47,17 +47,12 @@ public class Issue implements SuperEntity{
         return issueDate;
     }
 
-    public void setIssueDate(Date issueDate) {
+    public void setIssueDate(java.sql.Date issueDate) {
         this.issueDate = issueDate;
     }
 
     @Override
     public String toString() {
-        return "Issue{" +
-                "issueId='" + issueId + '\'' +
-                ", memberId='" + memberId + '\'' +
-                ", bookId='" + bookId + '\'' +
-                ", issueDate=" + issueDate +
-                '}';
+        return issueId;
     }
 }

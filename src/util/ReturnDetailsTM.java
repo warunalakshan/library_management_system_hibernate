@@ -8,22 +8,22 @@ public class ReturnDetailsTM {
     private String memberID;
     private String bookID;
     private String bookName;
-    private Date issueDate;
-    private LocalDate returnDate;
-    private long lateDays;
+    private Date returnDate;
+    private int lateDays;
+    private double fee;
 
-    public LocalDate getReturnDate() {
-        return returnDate;
+
+    public ReturnDetailsTM() {
     }
 
-    public ReturnDetailsTM(String issueID, String memberID, String bookID, String bookName, Date issueDate, LocalDate returnDate, long lateDays) {
+    public ReturnDetailsTM(String issueID, String memberID, String bookID, String bookName, Date returnDate, int lateDays, double fee) {
         this.issueID = issueID;
         this.memberID = memberID;
         this.bookID = bookID;
         this.bookName = bookName;
-        this.issueDate = issueDate;
         this.returnDate = returnDate;
         this.lateDays = lateDays;
+        this.fee = fee;
     }
 
     public String getIssueID() {
@@ -58,23 +58,27 @@ public class ReturnDetailsTM {
         this.bookName = bookName;
     }
 
-    public Date getIssueDate() {
-        return issueDate;
+    public double getFee() {
+        return fee;
     }
 
-    public void setIssueDate(Date issueDate) {
-        this.issueDate = issueDate;
+    public void setFee(double fee) {
+        this.fee = fee;
     }
 
-    public void setReturnDate(LocalDate returnDate) {
+    public Date getReturnDate() {
+        return returnDate;
+    }
+
+    public void setReturnDate(Date returnDate) {
         this.returnDate = returnDate;
     }
 
-    public long getLateDays() {
+    public int getLateDays() {
         return lateDays;
     }
 
-    public void setLateDays(long lateDays) {
+    public void setLateDays(int lateDays) {
         this.lateDays = lateDays;
     }
 

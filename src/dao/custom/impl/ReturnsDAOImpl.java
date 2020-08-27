@@ -19,17 +19,6 @@ public class ReturnsDAOImpl implements ReturnsDAO {
     @Override
     public List<Issue> findAll() throws Exception {
 
-//        ResultSet resultSet = CrudUtil.execute("select * from Issue");
-//        List<Issue> membersList = new ArrayList<>();
-//        while (resultSet.next()){
-//            membersList.add(new Issue(resultSet.getString(1),
-//                    resultSet.getString(2),
-//                    resultSet.getString(3),
-//                    resultSet.getDate(4)));
-//        }
-//
-//        return null;
-
         ResultSet resultSet = CrudUtil.execute("Select * from Issue");
         List<Issue> issuesList = new ArrayList<>();
 
@@ -60,6 +49,6 @@ public class ReturnsDAOImpl implements ReturnsDAO {
 
     @Override
     public boolean delete(String pk) throws Exception {
-        return false;
+        return CrudUtil.execute("delete from Issue where issue_id = ?", pk);
     }
 }

@@ -62,7 +62,7 @@ public class Members implements Serializable, SuperEntity {
 
     @Override
     public String toString() {
-        return "members{" +
+        return "Members{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", address='" + address + '\'' +

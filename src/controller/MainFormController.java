@@ -2,6 +2,7 @@ package controller;
 
 import bo.BOFactory;
 import bo.BOType;
+import bo.SuperBO;
 import bo.custom.BooksBO;
 import bo.custom.IssueBO;
 import bo.custom.MembersBO;
@@ -33,8 +34,11 @@ import util.ReturnDetailsTM;
 import util.ShowBooksTM;
 import util.ShowMembersTM;
 
+import javax.xml.crypto.Data;
 import java.io.IOException;
+import java.sql.Date;
 import java.sql.ResultSet;
+import java.time.LocalDate;
 import java.util.List;
 
 public class MainFormController {
@@ -50,14 +54,14 @@ public class MainFormController {
     public ImageView img_BooksList;
     public JFXButton btn_Cancel_BookIssue;
     public Pane pane_img_DashBoard;
-    public JFXComboBox cmb_MemberID;
-    public JFXComboBox cmb_BookID;
+    public JFXComboBox<ShowMembersTM> cmb_MemberID;
+    public JFXComboBox<ShowBooksTM> cmb_BookID;
     public Label lbl_IssueID;
     public JFXDatePicker dtp_Date;
     public JFXButton btn_Issue;
     public JFXButton btn_Cancel_returnBook;
     public TableView <ReturnDetailsTM>tbl_Return;
-    public JFXComboBox<Returns> cmb_IssueID_Return;
+    public JFXComboBox<Issue> cmb_IssueID_Return;
     public JFXButton btn_return;
     public JFXTextField txt_Fee;
     public Label lbl_fee;
@@ -76,38 +80,17 @@ public class MainFormController {
         tbl_Return.getColumns().get(1).setCellValueFactory(new PropertyValueFactory<>("memberID"));
         tbl_Return.getColumns().get(2).setCellValueFactory(new PropertyValueFactory<>("bookID"));
         tbl_Return.getColumns().get(3).setCellValueFactory(new PropertyValueFactory<>("bookName"));
-        tbl_Return.getColumns().get(4).setCellValueFactory(new PropertyValueFactory<>("issueDate"));
-        tbl_Return.getColumns().get(5).setCellValueFactory(new PropertyValueFactory<>("returnDate"));
-        tbl_Return.getColumns().get(6).setCellValueFactory(new PropertyValueFactory<>("lateDays"));
+        tbl_Return.getColumns().get(4).setCellValueFactory(new PropertyValueFactory<>("returnDate"));
+        tbl_Return.getColumns().get(5).setCellValueFactory(new PropertyValueFactory<>("lateDays"));
+        tbl_Return.getColumns().get(6).setCellValueFactory(new PropertyValueFactory<>("fee"));
 
         loadBooks();
         loadMembers();
-//        loadCombo();
+        loadCombo();
+        loadReturnTable();
     }
-//    ObservableList<String> items = cmbPackageCellID.getItems();
-//        try {
-//        ResultSet notReservedCells = packageCellsBO.getNotReservedCells();
-//        while (notReservedCells.next()){
-//            items.add(notReservedCells.getString(1));
-//        }
-//    } catch (Exception e) {
-//        e.printStackTrace();
-//    }
 
-    void loadCombo(){
-//        ObservableList<String > items = cmb_IssueID_Return.getItems();
-//        items.clear();
-//        try {
-//            ResultSet issues = returnsBO.getIssuesID();
-//
-//           while (issues.next()){
-//               items.add(issues.getString(1));
-//           }
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-    }
+
 
     public void img_List(MouseEvent mouseEvent) {
         Pane_1_DashBoard.setVisible(true);
@@ -196,9 +179,22 @@ public class MainFormController {
     }
 
     public void btn_Issue_OnAction(ActionEvent actionEvent) {
+        LocalDate value = dtp_Date.getValue();
 
+        System.out.println( cmb_MemberID.getSelectionModel().getSelectedItem().getId());
+        boolean result = false;
+        try{
+            result =  issueBO.issueBook(lbl_IssueID.getText(),
+                    cmb_MemberID.getSelectionModel().getSelectedItem().getId(),
+                    cmb_BookID.getSelectionModel().getSelectedItem().getId(),Date.valueOf(value.toString()));
 
-        new Alert(Alert.AlertType.INFORMATION, "Issue successfully", ButtonType.OK).show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (!result){
+            new Alert(Alert.AlertType.ERROR, "Failed to Issue the book", ButtonType.OK).show();
+        }
+
         pane_Issue.setVisible(false);
         pane_img_DashBoard.setVisible(true);
     }
@@ -228,16 +224,52 @@ public class MainFormController {
 //    -----------------------------return start--------------------------
 
     public void btn_Return_OnAction(ActionEvent actionEvent) {
+        Issue selectedItem = cmb_IssueID_Return.getSelectionModel().getSelectedItem();
+        boolean result = false;
+        try{
+            result = returnsBO.deleteIssue(selectedItem.getIssueId());
+            new Alert(Alert.AlertType.INFORMATION,"Return successfully..",ButtonType.OK).show();
+            loadReturnTable();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (!result){
+            new Alert(Alert.AlertType.ERROR,"Failed to Return",ButtonType.OK).show();
+        }
+
     }
     public void btn_Cancel_ReturnBooks_OnAction(ActionEvent actionEvent) {
         pane_return.setVisible(false);
         pane_img_DashBoard.setVisible(true);
     }
 
-    private void issueIdLoadCmd() throws Exception {
-        List<IssueDetailsTM> issuesID = (List<IssueDetailsTM>) returnsBO.getIssuesID();
-        ObservableList<IssueDetailsTM> issueDetailsTMS = FXCollections.observableArrayList(issuesID);
-        cmb_IssueID_Return.setItems(cmb_IssueID_Return.getItems());
+    void loadCombo(){
+        try {
+            ObservableList<Issue> items = cmb_IssueID_Return.getItems();
+            items.clear();
+
+            List<Issue> allIssues = issueBO.getAllIssues();
+            System.out.println(allIssues);
+            for (Issue allIssue : allIssues) {
+                items.add(allIssue);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    private void loadReturnTable(){
+        tbl_Return.getItems().clear();
+        List<ReturnDetailsTM> allDetails = null;
+        try{
+            allDetails = returnsBO.getAllReturnDetails();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        ObservableList<ReturnDetailsTM> returnDetailsTMS = FXCollections.observableArrayList(allDetails);
+        tbl_Return.setItems(returnDetailsTMS);
+        tbl_Return.refresh();
     }
 }
 
