@@ -13,6 +13,8 @@ import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
 import entity.Issue;
 import entity.Returns;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -34,12 +36,15 @@ import util.ReturnDetailsTM;
 import util.ShowBooksTM;
 import util.ShowMembersTM;
 
+import javax.swing.event.ChangeEvent;
 import javax.xml.crypto.Data;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public class MainFormController {
     public AnchorPane root;
@@ -63,9 +68,9 @@ public class MainFormController {
     public TableView <ReturnDetailsTM>tbl_Return;
     public JFXComboBox<Issue> cmb_IssueID_Return;
     public JFXButton btn_return;
-    public JFXTextField txt_Fee;
     public Label lbl_fee;
-    public Label lbl_feeDetail;
+    public Label lbl_ReturnDate;
+    public Label lbl_IssueId_Return;
 
     MembersBO membersBO= BOFactory.getInstance().getBO(BOType.MEMBER);
     IssueBO issueBO=BOFactory.getInstance().getBO(BOType.ISSUE);
@@ -86,9 +91,22 @@ public class MainFormController {
 
         loadBooks();
         loadMembers();
-        loadCombo();
         loadReturnTable();
-    }
+
+        tbl_Return.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<ReturnDetailsTM>() {
+            @Override
+            public void changed(ObservableValue<? extends ReturnDetailsTM> observable, ReturnDetailsTM oldValue, ReturnDetailsTM newValue) {
+                ReturnDetailsTM select = tbl_Return.getSelectionModel().getSelectedItem();
+                if (newValue == null){
+                }
+                else {
+                    lbl_ReturnDate.setText(String.valueOf("Return Date: " + select.getReturnDate()));
+                    lbl_fee.setText("Fee : Rs " + select.getFee());
+                    lbl_IssueId_Return.setText(select.getIssueID());
+                }
+            }
+        });
+}
 
 
 
@@ -108,17 +126,20 @@ public class MainFormController {
         Pane_1_DashBoard.setVisible(true);
     }
 
-    public void btn_BookIssue_DashBoard(ActionEvent actionEvent) {
+    public void btn_BookIssue_DashBoard(ActionEvent actionEvent) throws Exception {
         pane_Issue.setVisible(true);
         pane_return.setVisible(false);
         pane_img_DashBoard.setVisible(false);
         generateIssueID();
+        loadMembers();
+        loadBooks();
     }
 
     public void btn_ReturnBooks_DashBoard(ActionEvent actionEvent) {
         pane_return.setVisible(true);
         pane_Issue.setVisible(false);
         pane_img_DashBoard.setVisible(false);
+        loadReturnTable();
     }
 
     public void img_AddMember_OnAction(MouseEvent mouseEvent) throws IOException {
@@ -186,7 +207,8 @@ public class MainFormController {
         try{
             result =  issueBO.issueBook(lbl_IssueID.getText(),
                     cmb_MemberID.getSelectionModel().getSelectedItem().getId(),
-                    cmb_BookID.getSelectionModel().getSelectedItem().getId(),Date.valueOf(value.toString()));
+                    cmb_BookID.getSelectionModel().getSelectedItem().getId(),
+                    Date.valueOf(value.toString()));
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -224,20 +246,33 @@ public class MainFormController {
 //    -----------------------------return start--------------------------
 
     public void btn_Return_OnAction(ActionEvent actionEvent) {
-        Issue selectedItem = cmb_IssueID_Return.getSelectionModel().getSelectedItem();
-        boolean result = false;
-        try{
-            result = returnsBO.deleteIssue(selectedItem.getIssueId());
-            new Alert(Alert.AlertType.INFORMATION,"Return successfully..",ButtonType.OK).show();
-            loadReturnTable();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        if (!result){
-            new Alert(Alert.AlertType.ERROR,"Failed to Return",ButtonType.OK).show();
-        }
 
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION,"are you sure this issue is is correct..?",ButtonType.NO,ButtonType.YES);
+        Optional confirmType = confirm.showAndWait();
+        if (confirmType.get() == ButtonType.YES) {
+            ReturnDetailsTM selectedItem = tbl_Return.getSelectionModel().getSelectedItem();
+            boolean result = false;
+
+            try {
+                result = returnsBO.deleteIssue(selectedItem.getIssueID());
+                
+//                result = returnsBO.saveReturnDetails(lbl_IssueId_Return.getText(),
+//                        Date.valueOf(lbl_ReturnDate.getText()),
+//                        BigDecimal.valueOf(Long.parseLong(lbl_fee.getText())));
+
+                new Alert(Alert.AlertType.INFORMATION, "Return successfully..", ButtonType.OK).show();
+                loadReturnTable();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (!result) {
+                new Alert(Alert.AlertType.ERROR, "Failed to Return", ButtonType.OK).show();
+            }
+            tbl_Return.getSelectionModel().clearSelection();
+            loadReturnTable();
+        }
     }
+
     public void btn_Cancel_ReturnBooks_OnAction(ActionEvent actionEvent) {
         pane_return.setVisible(false);
         pane_img_DashBoard.setVisible(true);

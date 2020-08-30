@@ -30,7 +30,8 @@ public class UsersDAOImpl implements UsersDAO {
 
     @Override
     public boolean add(Users entity) throws Exception {
-        return CrudUtil.execute("insert into Users(?,?,?)", entity.getId(), entity.getUsername(), entity.getPassword());
+        return CrudUtil.execute("insert into Users values(?,?,?)",
+                entity.getId(), entity.getUsername(), entity.getPassword());
     }
 
     @Override

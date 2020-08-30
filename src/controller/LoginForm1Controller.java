@@ -25,7 +25,6 @@ public class LoginForm1Controller {
     public Button btn_Submit;
     public Label lbl_SignUp;
     public Pane pane_SignUp;
-    public TextField txt_ID_SignUp;
     public Button btn_SignUp;
     public TextField txt_Password_SignUp;
     public TextField txt_UserName_SignUp;
@@ -94,7 +93,6 @@ public class LoginForm1Controller {
 
         String userName = txt_userName_Login.getText();
         String password = txt_Password_Login.getText();
-        String id = lbl_UserId.getText();
 
         try{
             PreparedStatement preparedStatement = DBConnection.getInstance().getConnection().prepareStatement("select * from Users where username=? and password=?");
@@ -138,13 +136,12 @@ public class LoginForm1Controller {
             return;
         }
 
-        String userName = txt_userName_Login.getText();
-        String password = txt_Password_Login.getText();
-        String id = lbl_UserId.getText();
-
         boolean result = false;
         try {
-            result = usersBO.saveUsers(lbl_UserId.getText(), txt_UserName_SignUp.getText(), txt_Password_SignUp.getText());
+            result = usersBO.saveUsers(lbl_UserId.getText(),
+                    txt_UserName_SignUp.getText(),
+                    txt_Password_SignUp.getText());
+
         } catch (Exception exception) {
             exception.printStackTrace();
         }

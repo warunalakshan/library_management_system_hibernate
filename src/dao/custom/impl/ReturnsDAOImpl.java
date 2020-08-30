@@ -17,32 +17,34 @@ public class ReturnsDAOImpl implements ReturnsDAO {
     }
 
     @Override
-    public List<Issue> findAll() throws Exception {
+    public List<Returns> findAll() throws Exception {
 
-        ResultSet resultSet = CrudUtil.execute("Select * from Issue");
-        List<Issue> issuesList = new ArrayList<>();
-
-        while (resultSet.next()){
-            issuesList.add(new Issue(resultSet.getString(1),
-                    resultSet.getString(2),
-                    resultSet.getString(3),
-                    resultSet.getDate(4)));
-        }
-        return issuesList;
-    }
-
-    @Override
-    public Issue find(String pk) throws Exception {
+//        ResultSet resultSet = CrudUtil.execute("Select * from Issue");
+//        List<Returns> issuesList = new ArrayList<>();
+//
+//        while (resultSet.next()){
+//            issuesList.add(new Returns(resultSet.getString(1),
+//                    resultSet.getString(2),
+//                    resultSet.getString(3),
+//                    resultSet.getDate(4)));
+//        }
+//        return issuesList;
         return null;
     }
 
     @Override
-    public boolean add(Issue entity) throws Exception {
-        return false;
+    public Returns find(String pk) throws Exception {
+        return null;
     }
 
     @Override
-    public boolean update(Issue entity) throws Exception {
+    public boolean add(Returns entity) throws Exception {
+        return CrudUtil.execute("insert into Returns values (?,?,?)",
+        entity.getIssueId(),entity.getReturnDate(),entity.getFee());
+    }
+
+    @Override
+    public boolean update(Returns entity) throws Exception {
         return false;
     }
 
