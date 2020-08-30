@@ -78,12 +78,6 @@ public class ShowBooksController {
             return;
         }
 
-//        String id = lbl_BookID.getText();
-//        String name = txt_Name.getText();
-//        String author = txt_Author.getText();
-//        int qty = Integer.parseInt(txt_Quantity.getText());
-//        String isbn = txt_ISBN.getText();
-
         ShowBooksTM selectBook = tbl_AllBooks.getSelectionModel().getSelectedItem();
         boolean result = false;
 try {
